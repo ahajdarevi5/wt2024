@@ -1,0 +1,11 @@
+Prva greška koju sam primijetila odnosi se na visinu menija na stranicama "nekrentine" i "detalji". 
+Visina menija nije bila dovoljna, što je dovodilo do prekrivanja ikonica. 
+Kako bi ikonice bile vidljive i prilikom povećanja pri hover efektu, postavila sam visinu menija na 75 piksela.
+
+
+Na stranici nekretnina bolje je koristiti grid raspored, kako je to u početnom projektu,
+zbog same strukture stranice, koje uključuje brojne manje divove. Jedna od prednosti ovog pristupa je ta 
+što je atribut grid-template-columns postavljen na autofit, što nam omogućava da izbjegnemo 
+korištenje media query-ja i pojednostavi prilagodbu elemenata na različitim veličinama ekrana.
+Grid je puno bolje koristiti kada imamo više redova i kolona u odnosu na flex jer je korištenjem njega
+puno teže pozicionirati neke elemente.
