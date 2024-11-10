@@ -1,6 +1,7 @@
 Prva greška koju sam primijetila odnosi se na visinu menija na stranicama "nekrentine" i "detalji". 
 Visina menija nije bila dovoljna, što je dovodilo do prekrivanja ikonica. 
 Kako bi ikonice bile vidljive i prilikom povećanja pri hover efektu, postavila sam visinu menija na 75 piksela.
+Greska meni otvaranje...
 
 Na stranici nekretnina bolje je koristiti grid raspored, kako je to u početnom projektu,
 zbog same strukture stranice, koje uključuje brojne manje divove. Jedna od prednosti ovog pristupa je ta 
@@ -8,3 +9,15 @@ zbog same strukture stranice, koje uključuje brojne manje divove. Jedna od pred
 korištenje media query-ja i pojednostavi prilagodbu elemenata na različitim veličinama ekrana.
 Grid je puno bolje koristiti kada imamo više redova i kolona u odnosu na flex jer je korištenjem njega
 puno teže pozicionirati neke elemente.
+
+U vezi drugog zadatka, nastojala sam kreirati izgled što sličniji izvornom dizajnu. Kako bih osigurala da se elementi
+ne poredaju u jedan red, upotrijebila sam flex-wrap:wrap. Za centriranje elemenata na stranici po obe ose sam korisila align-items:center 
+i justify-content:center. 
+Međutim, kako nisam postigla željeni rezultat, odlučila sam promijeniti justify-content na flex-start kako bi elementi počinjali s lijeve strane. 
+Pošto je to pomaknulo čitav div prema lijevoj strani, pokušala sam problem riješiti prilagođavanjem margina kako bih centrirala tip-nekretnine divove, ali 
+to nije bilo efektivno za sve divove.
+
+
+Dalje kao još jedno moguće rješenje ... 
+
+
