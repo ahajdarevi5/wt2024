@@ -25,17 +25,23 @@ li a {
     text-decoration: none;
 }
 
-li i{
-    transition:transform 1s;
+.veci{
+    display:flex;
+    flex-direction: column-reverse;
+    align-items: center;
 }
 
-li a:hover{
-    color:#ff9900;
+.material-icons{
+    transition: transform 1s;
 }
-a:hover i{
-    color:#ff9900;
-    transform: scale(3);
+
+.material-icons:hover{
+    color: #ff9900;
+    transform: scale(2) translateY(-5px);
 }
-a:hover span{
+.material-icons:hover + .manji{
     color:transparent;
+}
+.manji:hover{
+    color:#ff9900;
 }
