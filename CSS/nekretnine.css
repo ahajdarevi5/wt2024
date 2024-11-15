@@ -8,24 +8,35 @@ body {
 iframe {
     border: none; 
     width: 100%;
-    height: 75px; /*jer se meni ne vidi upotpunosti*/
+    height: 65px; /*jer se meni ne vidi upotpunosti*/
 }
 
 .tip-nekretnine {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     font-weight: bold;
     font-size: 24px;
-    margin: 20px 0;
-    align-items:center;
+    margin: 20px auto; 
+    width: 100%;
 }
+#pp{
+    justify-content: center;
+}
+
 
 .grid-lista-nekretnina {
     display: flex;
-    flex-wrap:wrap;
+    flex-wrap: wrap;
+    justify-content: flex-start;
     gap: 20px;
     padding: 20px;
-    justify-content: flex-start;
+    width: 100%; 
+    max-width: 1280px; 
 }
+
+
 .tip-nekretnine h1{
     display:flex;
     justify-content:center;
