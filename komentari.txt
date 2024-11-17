@@ -1,23 +1,47 @@
-Prva greška koju sam primijetila odnosi se na visinu menija na stranicama "nekrentine" i "detalji". 
-Visina menija nije bila dovoljna, što je dovodilo do prekrivanja ikonica. 
-Kako bi ikonice bile vidljive i prilikom povećanja pri hover efektu, postavila sam visinu menija na 75 piksela.
-Greska meni otvaranje...
+Prva stvar koju sam primijetila odnosi se na visinu menija na stranicama. Poslije dodavanja ikonica, visina menija nije bila dovoljna, te je 
+dovodilo do prekrivanja ikonica. Kako bi ikonice bile vidljive i prilikom povećanja pri hover efektu, postavila sam visinu menija na 65 piksela.
+
+Još jedan problem na koji sam naišla kod menija jeste da druge stranice nije moguće otvoriti pravilno preko njega. Umjesto da se stranice otvore u glavnom prikazu, one se 
+učitavaju unutar samog menija, gdje se pojavljuje scroll bar i omogućava pregled stranice unutar menija.
 
 Na stranici nekretnina bolje je koristiti grid raspored, kako je to u početnom projektu,
 zbog same strukture stranice, koje uključuje brojne manje divove. Jedna od prednosti ovog pristupa je ta 
 što je atribut grid-template-columns postavljen na autofit, što nam omogućava da izbjegnemo 
 korištenje media query-ja i pojednostavi prilagodbu elemenata na različitim veličinama ekrana.
-Grid je puno bolje koristiti kada imamo više redova i kolona u odnosu na flex jer je korištenjem njega
+Grid je puno bolje koristiti kada imamo više redova i kolona u odnosu na flex jer je korištenjem flex-a
 puno teže pozicionirati neke elemente.
 
-U vezi drugog zadatka, nastojala sam kreirati izgled što sličniji izvornom dizajnu. Kako bih osigurala da se elementi
-ne poredaju u jedan red, upotrijebila sam flex-wrap:wrap. Za centriranje elemenata na stranici po obe ose sam korisila align-items:center 
+U vezi drugog zadatka, nastojala sam kreirati izgled što sličniji izvornom dizajnu.
+U prvom pokušaju sam, kako bih osigurala da se elementi ne redaju u jedan red, upotrijebila sam flex-wrap:wrap. Za centriranje elemenata na stranici po obe ose sam korisila align-items:center 
 i justify-content:center. 
 Međutim, kako nisam postigla željeni rezultat, odlučila sam promijeniti justify-content na flex-start kako bi elementi počinjali s lijeve strane. 
 Pošto je to pomaknulo čitav div prema lijevoj strani, pokušala sam problem riješiti prilagođavanjem margina kako bih centrirala tip-nekretnine divove, ali 
 to nije bilo efektivno za sve divove.
+Kod trenutnog rješenja sam postavila .tip-nekretnine na display:flex. Koristila sam flex-direction:column kako bi se 
+elementi poredali u jednu vertikalnu kolonu, jedan ispod drugog. Zatim sam taj div centrirala po obje ose kako bi bio smješten na sredini stranice.
+Što se tiče .grid-lista-nekretnina, također sam postavila display:flex, kao što je zadano u zadatku. Kako bi se elementi poredali s lijeva na desno,
+koristila sam atribut justify-content:flex-start. Ovo rješenje dobro funkcioniše za stanove, ali postoji manji problem kod kuća i poslovnih prostora. 
+Budući da ti elementi zauzimaju samo jedan red, poredani su ulijevo umjesto da su centrirani, što nije u skladu sa željenim izgledom.
+
+U trećem zadatku, kako bismo elemente grupisali po dva u redu kada je širina ekrana veća od 800px, koristili smo flex: 1 1 48%. Ono postavlja 3 različita atributa: prva vrijednost određuje
+koliko će element rasti u odnosu na druge fleksibilne elemente unutar kontejnera. Vrijednost 1 znači da će element rasti kako bi popunio raspoloživi prostor unutar kontejnera.
+Druga vrijednost određuje koliko se element može smanjiti kada nema dovoljno prostora. Ovdje smo sa 1 postavili da se element proporcionalno smanjuje zajedno s drugim elementima kada je prostor
+ograničen. Treća vrijednost određuje osnovnu veličinu elementa. Postavljanjem na 48%, širina svakog elementa zauzima približno polovinu dostupne širine kontejnera, što omogućava razmak između njih.
+Kada je širina ekrana između 600px i 800px, postavili smo flex: 1 1 100%, kako bi osigurali da se svaki upit prikazuje u punoj širini ekrana, jedan ispod drugog.
+Dugmad za navigaciju smo dodali u HTML i grupisali ih unutar div elementa klase dugmad. Div sam postavila na display:flex te ga centrirala i horizontalno i vertikalno. Dugmad su na početku skrivena, a prikazuju se 
+kada je širina ekrana manja od 600px. Na taj način omogućavamo pregled upita jedan po jedan, pri čemu je osigurano da se prikazuje samo prvi upit pomoću frist-child.
+
+Što se tiče četvrtog zadatka, u prvom pokušaju sam pokušala poredati elemente u tačnom redoslijedu. Međutim, naišla sam na problem kada mi je visina ekrana bila ispod 800px - pozicije
+između "Kvadratne vijesti 2", "Kvadratne vijesti 4" i "Visoke vijesti 2" su se zamijenile. Taj problem sam tada riješila grupisanjem elemenata unutar međukontejnera.
+Kasnije je naglašeno da nije dozvoljeno koristiti međukontejnere, pa sam zadatak riješila koristeći grid-template-areas. Svakom elementu koji se pojavljuje u HTML-u, dodijelila sam 
+ime pomoću grid-area. Iako nth-of-type ne zavisi od klasa div elemenata, ostavila sam imena klasa radi lakšeg snalaženja. Elementima sam dala imena prema redoslijedu kojim se pojavljuju u HTML-u.
+Nakon toga, za svaki media query precizno sam odredila poziciju svakog elementa koristeći grid-template-areas. U zavisnosti od media queryja, podesila sam visinu i širinu elemenata, koristeći
+aspect-ratio kako je i navedeno u zadatku. Za "Glavnu vijest" sam postavila da se proteže na 4 kolone kod širih ekrana i na 2 kolone kod manjih ekrana.
+Kod paragrafa, dodala sam dio koda koji osigurava da, ukoliko tekst ne može stati unutar div elementa, umjesto da bude zaklonjen, bude ograničen na određen broj redova i prikazan sa tri tačke na kraju.
 
 
-Dalje kao još jedno moguće rješenje ... 
+
+
+
 
 
