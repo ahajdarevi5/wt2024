@@ -21,22 +21,40 @@ function postaviCarousel(glavniElement,sviElementi,indeks=0) {
 
     return {fnLijevo,fnDesno};
 }
-document.addEventListener('DOMContentLoaded',()=>{
-    const glavniElement=document.querySelector('#upiti');
-    const sviElementi=Array.from(document.querySelectorAll('.upit'));
+document.addEventListener("DOMContentLoaded",() => {
+    let carousel=null;
     const dugmeLijevo=document.querySelector('.btn-preth');
     const dugmeDesno=document.querySelector('.btn-sljedeci');
-
-    const carousel=postaviCarousel(glavniElement,sviElementi);
-
-    if (carousel) 
-    {
-        dugmeLijevo.addEventListener('click',carousel.fnLijevo);
-        dugmeDesno.addEventListener('click',carousel.fnDesno);
-    } 
-    else 
-    {
-        console.log("Greska!");
+    const glavniElement=document.querySelector('#upiti');
+    const sviElementi=Array.from(document.querySelectorAll('.upit'));
+    function CarouselFunc() {
+        if (window.innerWidth<=600) 
+            {
+                if (!carousel) 
+                    { 
+                        carousel=postaviCarousel(glavniElement,sviElementi);
+                        if (carousel) 
+                        {
+                            dugmeLijevo.addEventListener("click",carousel.fnLijevo);
+                            dugmeDesno.addEventListener("click",carousel.fnDesno);
+                        } 
+                        else 
+                        {
+                            console.error("Greska!");
+                        }
+            }
+        } 
+        else 
+        {
+            if (carousel) 
+            {
+                dugmeLijevo.removeEventListener("click",carousel.fnLijevo);
+                dugmeDesno.removeEventListener("click",carousel.fnDesno);
+                carousel=null;
+            }
+            glavniElement.innerHTML=sviElementi.map(el=>el.outerHTML).join(""); 
+        }
     }
+    CarouselFunc();
+    window.addEventListener("resize", CarouselFunc);
 });
-
