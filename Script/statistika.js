@@ -126,6 +126,7 @@ statistikaNekretnina.init(listaNekretnina,listaKorisnika);
 
 document.addEventListener('DOMContentLoaded',()=>{
     document.getElementById('generisiProsjecnaKvadratura').addEventListener('click',()=>{
+        document.getElementById('prosjecnaKvadraturaRezultat').innerHTML=``;
          //moramo kreirati objekat zbog filtriraneNekretnine da proslijedis
         let kriterij={};
         let tipNekretnine=document.getElementById('tip_nekretnine_input').value;
@@ -143,10 +144,11 @@ document.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('prosjecnaKvadraturaRezultat').innerHTML=`Prosječna kvadratura iznosi ${prosjecnaKvadratura} m^2.`;
     });
     document.getElementById('generisiOutlier').addEventListener('click',()=>{
+        document.getElementById('outlierRezultat').innerHTML = ``;
         let kriterij={}; 
         let tipNekretnine=document.getElementById('tip_nekretnine_input').value;
-        let minKvadratura=parseInt(document.getElementById('min_kvadratura').value);
-        let maxKvadratura=parseInt(document.getElementById('max_kvadratura').value);
+        let minKvad=parseInt(document.getElementById('min_kvadratura').value);
+        let maxKvad=parseInt(document.getElementById('max_kvadratura').value);
         let minCijena=parseInt(document.getElementById('min_cijena').value);
         let maxCijena=parseInt(document.getElementById('max_cijena').value);
     
@@ -160,8 +162,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         let outlierNekretnina=statistikaNekretnina.outlier(kriterij, nazivSvojstva);
         if (outlierNekretnina) 
         {
-            document.getElementById('outlierRezultat').innerHTML = `
-            <strong>ID:</strong> ${outlierNekretnina.id} <br>
+            document.getElementById('outlierRezultat').innerHTML=`<strong>ID:</strong> ${outlierNekretnina.id} <br>
             <strong>Tip nekretnine:</strong> ${outlierNekretnina.tip_nekretnine} <br>
             <strong>Naziv:</strong> ${outlierNekretnina.naziv} <br>
             <strong>Kvadratura:</strong> ${outlierNekretnina.kvadratura} m^2 <br>
@@ -171,7 +172,6 @@ document.addEventListener('DOMContentLoaded',()=>{
             <strong>Godina izgradnje:</strong> ${outlierNekretnina.godina_izgradnje} <br>
             <strong>Datum objave:</strong> ${outlierNekretnina.datum_objave} <br>
             <strong>Opis:</strong> ${outlierNekretnina.opis} <br>
-            <strong>Upiti:</strong> ${outlierNekretnina.upiti} <br>
             `;
         } 
         else 
@@ -180,22 +180,22 @@ document.addEventListener('DOMContentLoaded',()=>{
         }
     });
     document.getElementById('generisiMojeNekretnine').addEventListener('click',()=>{
+        document.getElementById('mojeNekretnineRezultat').innerHTML=``;
         let korisnickoIme=document.getElementById('korisnicko-ime').value;
         let mojeNekretnine=statistikaNekretnina.mojeNekretnine(korisnickoIme);
         if(mojeNekretnine.length > 0) 
         {
             document.getElementById('mojeNekretnineRezultat').innerHTML = `
-            <strong>ID:</strong> ${outlierNekretnina.id} <br>
-            <strong>Tip nekretnine:</strong> ${outlierNekretnina.tip_nekretnine} <br>
-            <strong>Naziv:</strong> ${outlierNekretnina.naziv} <br>
-            <strong>Kvadratura:</strong> ${outlierNekretnina.kvadratura} m^2 <br>
-            <strong>Cijena:</strong> ${outlierNekretnina.cijena} KM <br>
-            <strong>Tip grijanja:</strong> ${outlierNekretnina.tip_grijanja} <br>
-            <strong>Lokacija:</strong> ${outlierNekretnina.lokacija} <br>
-            <strong>Godina izgradnje:</strong> ${outlierNekretnina.godina_izgradnje} <br>
-            <strong>Datum objave:</strong> ${outlierNekretnina.datum_objave} <br>
-            <strong>Opis:</strong> ${outlierNekretnina.opis} <br>
-            <strong>Upiti:</strong> ${outlierNekretnina.upiti} <br>
+            <strong>ID:</strong> ${mojeNekretnine.id} <br>
+            <strong>Tip nekretnine:</strong> ${mojeNekretnine.tip_nekretnine} <br>
+            <strong>Naziv:</strong> ${mojeNekretnine.naziv} <br>
+            <strong>Kvadratura:</strong> ${mojeNekretnine.kvadratura} m^2 <br>
+            <strong>Cijena:</strong> ${mojeNekretnine.cijena} KM <br>
+            <strong>Tip grijanja:</strong> ${mojeNekretnine.tip_grijanja} <br>
+            <strong>Lokacija:</strong> ${mojeNekretnine.lokacija} <br>
+            <strong>Godina izgradnje:</strong> ${mojeNekretnine.godina_izgradnje} <br>
+            <strong>Datum objave:</strong> ${mojeNekretnine.datum_objave} <br>
+            <strong>Opis:</strong> ${mojeNekretnine.opis} <br>
             `;
         }
         else 
@@ -203,4 +203,5 @@ document.addEventListener('DOMContentLoaded',()=>{
             document.getElementById('mojeNekretnineRezultat').innerHTML='Nema nekretnina za unesenog korisnika.';
         }
     });
+
 });
