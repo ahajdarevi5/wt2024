@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistika</title>
     <link rel="stylesheet" href="../CSS/statistika.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> 
 </head>
 <body>
     <h1>Statistika nekretnina</h1>
+    <div class="container">
     <div class="unosParametara">
-        <h3>Unos parametara</h3>
+        <h3>Histogram</h3>
         <div id="periodiContainer">
             <div class="period">
                 <label for="periodOd1">Period od (godina):</label>
@@ -31,11 +33,13 @@
         <button id="dodajRasponCijena">Dodaj raspon cijena</button>
         <br>
         <button id="generisiHistogram">Iscrtaj histogram</button>
+        <div id="histogrami"></div>
     </div>
 
-    <div id="histogrami"></div>
+   
 
     <div id="statistika">
+        <div id="prosjecnaKvCont">
         <h3>Izračunaj prosječnu kvadraturu</h3>
         <label for="kvadraturaKriterij">Odaberite kriterij:</label>
         <select id="kvadraturaKriterij">
@@ -79,6 +83,8 @@
         </div>
         <button id="generisiProsjecnaKvadratura">Izračunaj prosječnu kvadraturu</button>
         <div id="prosjecnaKvadraturaRezultat"></div> 
+    </div>
+
 
 
         <div id="outlierCont">
@@ -144,6 +150,7 @@
             <button id="generisiMojeNekretnine">Prikaži Moje Nekretnine</button>
             <div id="mojeNekretnineRezultat"></div> 
         </div>
+    </div>
     </div>
     <script src="../Script/SpisakNekretnina.js"></script> 
     <script src="../Script/nekretnine.js"></script> 
