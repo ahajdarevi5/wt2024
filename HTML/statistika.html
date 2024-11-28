@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="bs-BA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistika</title>
+    <link rel="stylesheet" href="../CSS/statistika.css">
+</head>
+<body>
+    <h1>Statistika nekretnina</h1>
+    <div class="unosParametara">
+        <h3>Unos parametara</h3>
+        <div id="periodiContainer">
+            <div class="period">
+                <label for="periodOd1">Period od (godina):</label>
+                <input type="number" id="periodOd1">
+                <label for="periodDo1">Period do (godina):</label>
+                <input type="number" id="periodDo1">
+            </div>
+        </div>
+        <button id="dodajPeriod">Dodaj period</button>
+
+        <div id="rasponiCijenaContainer">
+            <div class="raspon-cijena">
+                <label for="rasponOd1">Cijena od:</label>
+                <input type="number" id="rasponOd1">
+                <label for="rasponDo1">Cijena do:</label>
+                <input type="number" id="rasponDo1">
+            </div>
+        </div>
+        <button id="dodajRasponCijena">Dodaj raspon cijena</button>
+        <br>
+        <button id="generisiHistogram">Iscrtaj histogram</button>
+    </div>
+
+    <div id="histogrami"></div>
+
+    <div id="statistika">
+        <h3>Izračunaj prosječnu kvadraturu</h3>
+        <label for="kvadraturaKriterij">Odaberite kriterij:</label>
+        <select id="kvadraturaKriterij">
+            <option value="tip_nekretnine">Tip nekretnine</option>
+            <option value="kvadratura">Kvadratura</option>
+            <option value="cijena">Cijena</option>
+            <option value="id_nekretnine">ID</option>
+            <option value="naziv">Naziv</option>
+            <option value="tip_grijanja">Tip grijanja</option>
+            <option value="lokacija">Lokacija</option>
+            <option value="godina_izgradnje">Godina izgradnje</option>
+            <option value="datum_objave">Datum objave</option>
+            <option value="opis">Opis</option>
+            <option value="upiti">Upiti</option>
+        </select>
+
+        <div id="kvadraturaTipNekrCont">
+            <label for="tip_nekretnine_input">Unesite tip nekretnine:</label>
+            <input type="text" id="tip_nekretnine_input" placeholder="Stan, Kuća, Poslovni prostor">
+        </div>
+
+        <div id="kvadraturaContainer" style="display: none;">
+            <label for="min_kvadratura">Minimalna kvadratura:</label>
+            <input type="number" id="min_kvadratura">
+
+            <label for="max_kvadratura">Maksimalna kvadratura:</label>
+            <input type="number" id="max_kvadratura">
+        </div>
+
+        <div id="cijenaCont" style="display: none;">
+            <label for="min_cijena">Minimalna cijena:</label>
+            <input type="number" id="min_cijena">
+
+            <label for="max_cijena">Maksimalna cijena:</label>
+            <input type="number" id="max_cijena">
+        </div>
+
+        <div id="ostaliKriterijiContainer" style="display: none;">
+            <label for="ostali_kriteriji_input">Unesite vrijednost za kriterij:</label>
+            <input type="text" id="ostali_kriteriji_input" placeholder="Unesite vrijednost">
+        </div>
+        <button id="generisiProsjecnaKvadratura">Izračunaj prosječnu kvadraturu</button>
+        <div id="prosjecnaKvadraturaRezultat"></div> 
+
+
+        <div id="outlierCont">
+            <h3>Pronađi Outlier</h3>
+            <label for="outlierKriterij">Odaberite kriterij za outlier:</label>
+            <select id="outlierKriterij">
+                <option value="tip_nekretnine">Tip nekretnine</option>
+                <option value="kvadratura">Kvadratura</option>
+                <option value="cijena">Cijena</option>
+                <option value="id_nekretnine">ID</option>
+                <option value="naziv">Naziv</option>
+                <option value="tip_grijanja">Tip grijanja</option>
+                <option value="lokacija">Lokacija</option>
+                <option value="godina_izgradnje">Godina izgradnje</option>
+                <option value="datum_objave">Datum objave</option>
+                <option value="opis">Opis</option>
+                <option value="upiti">Upiti</option>
+            </select>
+
+            <div id="outlierTipNekrCont">
+                <label for="outlier_tip_nekretnine_input">Unesite tip nekretnine:</label>
+                <input type="text" id="outlier_tip_nekretnine_input" placeholder="Stan, Kuća, Poslovni prostor">
+            </div>
+        
+            <div id="outlierKvadraturaCont" style="display: none;">
+                <label for="min_outlier_kvadratura">Minimalna kvadratura:</label>
+                <input type="number" id="min_outlier_kvadratura">
+                <label for="max_outlier_kvadratura">Maksimalna kvadratura:</label>
+                <input type="number" id="max_outlier_kvadratura">
+            </div>
+        
+            <div id="outlierCijenaCont" style="display: none;">
+                <label for="min_outlier_cijena">Minimalna cijena:</label>
+                <input type="number" id="min_outlier_cijena">
+                <label for="max_outlier_cijena">Maksimalna cijena:</label>
+                <input type="number" id="max_outlier_cijena">
+            </div>
+        
+            <div id="outlierOstaliKritCont" style="display: none;">
+                <label for="outlier_ostali_kriteriji_input">Unesite vrijednost za kriterij:</label>
+                <input type="text" id="outlier_ostali_kriteriji_input" placeholder="Unesite vrijednost">
+            </div>
+        
+            <label for="naziv-svojstva">Odaberite svojstvo za outlier:</label>
+            <select id="naziv-svojstva">
+                <option value="kvadratura">Kvadratura</option>
+                <option value="cijena">Cijena</option>
+                <option value="id">ID</option>
+                <option value="godina_izgradnje">Godina izgradnje</option>
+                <option value="datum_objave">Datum objave</option>
+            </select>
+        
+            <button id="generisiOutlier">Pronađi Outlier</button>
+            <div id="outlierRezultat"></div>
+        </div>
+
+        <div id="mojeNekretnineContainer">
+            <h3>Moje Nekretnine</h3>
+
+            <label for="korisnicko-ime">Unesite korisničko ime:</label>
+            <input type="text" id="korisnicko-ime" placeholder="Unesite svoje korisničko ime">
+
+            <button id="generisiMojeNekretnine">Prikaži Moje Nekretnine</button>
+            <div id="mojeNekretnineRezultat"></div> 
+        </div>
+    </div>
+    <script src="../Script/SpisakNekretnina.js"></script> 
+    <script src="../Script/nekretnine.js"></script> 
+    <script src="../Script/StatistikaNekretnina.js"></script> 
+    <script src="../Script/statistika.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded",function (){
+            const odabirKriterija=document.getElementById("kvadraturaKriterij");
+            const tipNekretnineContainer=document.getElementById("kvadraturaTipNekrCont");
+            const kvadraturaContainer=document.getElementById("kvadraturaContainer");
+            const cijenaContainer=document.getElementById("cijenaCont");
+            const ostaliKriterijiContainer=document.getElementById("ostaliKriterijiContainer");
+
+            const outlierOdabirKriterija=document.getElementById("outlierKriterij");
+            const oTipNekretnineContainer=document.getElementById("outlierTipNekrCont");
+            const outlierKvadraturaContainer=document.getElementById("outlierKvadraturaCont");
+            const outlierCijenaContainer=document.getElementById("outlierCijenaCont");
+            const outlierOstaliKriterijiContainer=document.getElementById("outlierOstaliKritCont");
+    
+            odabirKriterija.value="tip_nekretnine";
+            tipNekretnineContainer.style.display="block";
+            kvadraturaContainer.style.display="none";
+            cijenaContainer.style.display="none";
+            ostaliKriterijiContainer.style.display="none";
+
+            odabirKriterija.addEventListener("change",function (){
+                const odabranaVrijednost=odabirKriterija.value;
+
+                tipNekretnineContainer.style.display="none";
+                kvadraturaContainer.style.display="none";
+                cijenaContainer.style.display="none";
+                ostaliKriterijiContainer.style.display="none";
+
+                if (odabranaVrijednost==="tip_nekretnine")
+                {
+                    tipNekretnineContainer.style.display="block";
+                } 
+                else if (odabranaVrijednost==="kvadratura") 
+                {
+                    kvadraturaContainer.style.display="block";
+                } 
+                else if (odabranaVrijednost==="cijena") 
+                {
+                    cijenaContainer.style.display="block";
+                } 
+                else 
+                {
+                    ostaliKriterijiContainer.style.display="block";
+                }
+            });
+    
+            outlierOdabirKriterija.value="tip_nekretnine";
+            oTipNekretnineContainer.style.display="block";
+            outlierKvadraturaContainer.style.display="none";
+            outlierCijenaContainer.style.display="none";
+            outlierOstaliKriterijiContainer.style.display="none";
+    
+            outlierOdabirKriterija.addEventListener("change",function(){
+                const odabranaVrijednost=outlierOdabirKriterija.value;
+
+                oTipNekretnineContainer.style.display="none";
+                outlierKvadraturaContainer.style.display="none";
+                outlierCijenaContainer.style.display="none";
+                outlierOstaliKriterijiContainer.style.display="none";
+
+                if (odabranaVrijednost==="tip_nekretnine") 
+                {
+                    oTipNekretnineContainer.style.display="block";
+                } 
+                else if (odabranaVrijednost==="kvadratura")
+                {
+                    outlierKvadraturaContainer.style.display="block";
+                } 
+                else if (odabranaVrijednost==="cijena") 
+                {
+                    outlierCijenaContainer.style.display="block";
+                } 
+                else 
+                {
+                    outlierOstaliKriterijiContainer.style.display="block";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
