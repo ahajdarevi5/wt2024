@@ -18,7 +18,7 @@ h1 {
     margin: 20px 0;
     color: #333;
 }
-#generisiHistogram,#generisiProsjecnaKvadratura, #generisiOutlier, #generisiMojeNekretnine, #dodajRasponCijena, #dodajPeriod {
+#generisiHistogram,#generisiProsjecnaKvadratura, #generisiOutlier, #generisiMojeNekretnine, #dodajRasponCijena, #dodajPeriod, #resetMojeNekretnine, #resetOutlier, #resetProsjecnaKvadratura, #resetHistogram{
     color: white;
     border: none;
     border-radius: 5px;
@@ -49,6 +49,11 @@ h1 {
     background: #e9ecef;
     border-radius: 5px;
     font-weight: bold;
+}
+#resetMojeNekretnine, #resetOutlier, #resetProsjecnaKvadratura, #resetHistogram{
+    color:black;
+    width:10%;
+    border:1px solid gainsboro;
 }
 input[type="number"],
 input[type="text"],

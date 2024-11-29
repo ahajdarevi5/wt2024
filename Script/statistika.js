@@ -141,7 +141,14 @@ document.addEventListener('DOMContentLoaded',()=>{
         kriterij.min_cijena=minCijena;
         kriterij.max_cijena=maxCijena;
         let prosjecnaKvadratura=statistikaNekretnina.prosjecnaKvadratura(kriterij);
-        document.getElementById('prosjecnaKvadraturaRezultat').innerHTML=`Prosječna kvadratura iznosi ${prosjecnaKvadratura} m^2.`;
+        if(typeof prosjecnaKvadratura==='string') 
+        {
+            document.getElementById('prosjecnaKvadraturaRezultat').innerHTML=prosjecnaKvadratura;
+        } 
+        else 
+        {
+            document.getElementById('prosjecnaKvadraturaRezultat').innerHTML=`Prosječna kvadratura iznosi ${prosjecnaKvadratura} m2.`;
+        }
     });
     document.getElementById('generisiOutlier').addEventListener('click',()=>{
         document.getElementById('outlierRezultat').innerHTML = ``;
@@ -160,7 +167,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 
         let nazivSvojstva=document.getElementById('naziv-svojstva').value;
         let outlierNekretnina=statistikaNekretnina.outlier(kriterij, nazivSvojstva);
-        if (outlierNekretnina) 
+        if(outlierNekretnina) 
         {
             document.getElementById('outlierRezultat').innerHTML=`<strong>ID:</strong> ${outlierNekretnina.id} <br>
             <strong>Tip nekretnine:</strong> ${outlierNekretnina.tip_nekretnine} <br>
@@ -183,7 +190,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('mojeNekretnineRezultat').innerHTML=``;
         let korisnickoIme=document.getElementById('korisnicko-ime').value;
         let mojeNekretnine=statistikaNekretnina.mojeNekretnine(korisnickoIme);
-        if(mojeNekretnine.length > 0) 
+        if(mojeNekretnine.length>0) 
         {
             document.getElementById('mojeNekretnineRezultat').innerHTML = `
             <strong>ID:</strong> ${mojeNekretnine.id} <br>
@@ -203,5 +210,83 @@ document.addEventListener('DOMContentLoaded',()=>{
             document.getElementById('mojeNekretnineRezultat').innerHTML='Nema nekretnina za unesenog korisnika.';
         }
     });
+    document.getElementById('dodajPeriod').addEventListener('click',()=>{
+        let periodCont=document.getElementById('periodiContainer');
+        let i=periodCont.children.length+1;
+        let novi=document.createElement('div');
+        novi.classList.add('period');
+        novi.innerHTML = `
+            <label for="periodOd${i}">Period od (godina):</label>
+            <input type="number" id="periodOd${i}">
+            <label for="periodDo${i}">Period do (godina):</label>
+            <input type="number" id="periodDo${i}">
+        `;
+        periodCont.appendChild(novi);
+    });
+
+    document.getElementById('dodajRasponCijena').addEventListener('click',()=>{
+        let rasponiCijenaCont=document.getElementById('rasponiCijenaContainer');
+        let i=rasponiCijenaCont.children.length + 1;
+        let novi=document.createElement('div');
+        novi.classList.add('raspon-cijena');
+        novi.innerHTML = `
+            <label for="rasponOd${i}">Cijena od:</label>
+            <input type="number" id="rasponOd${i}">
+            <label for="rasponDo${i}">Cijena do:</label>
+            <input type="number" id="rasponDo${i}">
+        `;
+        rasponiCijenaCont.appendChild(novi);
+    });
+
+
+    function resetProsjecnaKvadraturaF() {
+        let odabirKriterija=document.getElementById("kvadraturaKriterij");
+        let tipNekretnineContainer=document.getElementById("kvadraturaTipNekrCont");
+        let kvadraturaContainer=document.getElementById("kvadraturaContainer");
+        let cijenaContainer=document.getElementById("cijenaCont");
+        let ostaliKriterijiContainer=document.getElementById("ostaliKriterijiContainer");
+
+        odabirKriterija.value="tip_nekretnine";
+        tipNekretnineContainer.style.display="block";
+        kvadraturaContainer.style.display="none";
+        cijenaContainer.style.display="none";
+        ostaliKriterijiContainer.style.display="none";
+        document.getElementById('prosjecnaKvadraturaRezultat').innerHTML='';
+        document.getElementById('tip_nekretnine_input').value='';
+        document.getElementById('min_kvadratura').value='';
+        document.getElementById('max_kvadratura').value='';
+        document.getElementById('min_cijena').value='';
+        document.getElementById('max_cijena').value='';
+    }
+    
+    function resetOutlierF() {
+        let outlierOdabirKriterija=document.getElementById("outlierKriterij");
+        let oTipNekretnineContainer=document.getElementById("outlierTipNekrCont");
+        let outlierKvadraturaContainer=document.getElementById("outlierKvadraturaCont");
+        let outlierCijenaContainer=document.getElementById("outlierCijenaCont");
+        let outlierOstaliKriterijiContainer=document.getElementById("outlierOstaliKritCont");
+        outlierOdabirKriterija.value="tip_nekretnine";
+        oTipNekretnineContainer.style.display="block";
+        outlierKvadraturaContainer.style.display="none";
+        outlierCijenaContainer.style.display="none";
+        outlierOstaliKriterijiContainer.style.display="none";
+        document.getElementById('outlierRezultat').innerHTML='';
+        document.getElementById('outlier_tip_nekretnine_input').value='';
+        document.getElementById('min_outlier_kvadratura').value='';
+        document.getElementById('max_outlier_kvadratura').value='';
+        document.getElementById('min_outlier_cijena').value='';
+        document.getElementById('max_outlier_cijena').value='';
+        document.getElementById('outlier_ostali_kriteriji_input').value='';
+    }
+    function resetMojeNekrentineF(){
+        document.getElementById('mojeNekretnineRezultat').innerHTML='';
+        document.getElementById('korisnicko-ime').value='';
+    }
+
+    document.getElementById('resetProsjecnaKvadratura').addEventListener('click', resetProsjecnaKvadraturaF);
+    document.getElementById('resetOutlier').addEventListener('click', resetOutlierF);
+    document.getElementById('resetHistogram').addEventListener('click', () => {
+        document.getElementById('histogrami').innerHTML='';});
+    document.getElementById('resetMojeNekretnine').addEventListener('click',resetMojeNekrentineF);
 
 });
