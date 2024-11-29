@@ -289,4 +289,55 @@ document.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('histogrami').innerHTML='';});
     document.getElementById('resetMojeNekretnine').addEventListener('click',resetMojeNekrentineF);
 
+    document.getElementById('generisiHistogram').addEventListener('click',()=>{
+        let periodOd=parseInt(document.getElementById('periodOd1').value);
+        let periodDo=parseInt(document.getElementById('periodDo1').value);
+        let period={od: periodOd, 
+                    do: periodDo};
+    
+        let rasponOd=parseInt(document.getElementById('rasponOd1').value);
+        let rasponDo=parseInt(document.getElementById('rasponDo1').value);
+        let rasponCijena={od: rasponOd,
+                          do: rasponDo};
+
+        let grafik=document.createElement('canvas');
+        document.getElementById('histogrami').appendChild(grafik);
+
+        const hist=statistikaNekretnina.histogramCijena([period],[rasponCijena]);
+        const podacizaHistogram=[{label:`Period ${period.od} - ${period.do}`,
+                                  data:[hist[0].brojNekretnina],
+                                  backgroundColor:'red'}];
+
+        new Chart(grafik,{
+            type:'bar',
+            data: 
+            {
+                labels:[`Raspon:${rasponCijena.od} - ${rasponCijena.do} KM`],
+                datasets:podacizaHistogram
+            },
+            options: 
+            {
+                scales: 
+                {
+                    y: 
+                    {
+                        beginAtZero:true,
+                        title: 
+                        {
+                            display:true,
+                            text:'Broj nekretnina'
+                        }
+                    },
+                    x: 
+                    {
+                        title: 
+                        {
+                            display:true,
+                            text:'Raspon cijena'
+                        }
+                    }
+                }
+            }
+        });
+    });
 });
