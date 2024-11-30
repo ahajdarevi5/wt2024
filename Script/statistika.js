@@ -167,11 +167,35 @@ document.addEventListener('DOMContentLoaded',()=>{
 
         let nazivSvojstva=document.getElementById('naziv-svojstva').value;
         let outlierNekretnina=statistikaNekretnina.outlier(kriterij, nazivSvojstva);
-        if(outlierNekretnina) 
+        if (outlierNekretnina) 
         {
-            document.getElementById('outlierRezultat').innerHTML=`<strong>ID:</strong> ${outlierNekretnina.id} <br>
+            let upitiOutlier='';
+            if(outlierNekretnina.upiti.length>0)
+            {
+                upitiOutlier='<strong>Upiti:</strong><ul>';
+                outlierNekretnina.upiti.forEach(upit=>{
+                    let korisnik=listaKorisnika.find(k => k.id === upit.korisnik_id);
+                    let korisnikInfo='Nulti korisnik';
+                    if (korisnik && korisnik.ime && korisnik.prezime) 
+                    {
+                        korisnikInfo=korisnik.ime+' '+korisnik.prezime;
+                    }
+                    upitiOutlier+= `
+                        <li>
+                            <strong>Korisnik:</strong> ` + korisnikInfo + ` <br>
+                            <strong>Tekst upita:</strong> ` + upit.tekst_upita + `
+                        </li>`;
+                });
+                upitiOutlier+='</ul>';
+            }
+            else 
+            {
+                upitiOutlier='<strong>Upiti:</strong> Ne postoje upiti za ovu nekretninu.';
+            }
+            document.getElementById('outlierRezultat').innerHTML=`
+                <span style="font-size: 19px; font-weight: bold;">${outlierNekretnina.naziv}</span> <br> <br>
+            <strong>ID:</strong> ${outlierNekretnina.id} <br>
             <strong>Tip nekretnine:</strong> ${outlierNekretnina.tip_nekretnine} <br>
-            <strong>Naziv:</strong> ${outlierNekretnina.naziv} <br>
             <strong>Kvadratura:</strong> ${outlierNekretnina.kvadratura} m^2 <br>
             <strong>Cijena:</strong> ${outlierNekretnina.cijena} KM <br>
             <strong>Tip grijanja:</strong> ${outlierNekretnina.tip_grijanja} <br>
@@ -179,11 +203,12 @@ document.addEventListener('DOMContentLoaded',()=>{
             <strong>Godina izgradnje:</strong> ${outlierNekretnina.godina_izgradnje} <br>
             <strong>Datum objave:</strong> ${outlierNekretnina.datum_objave} <br>
             <strong>Opis:</strong> ${outlierNekretnina.opis} <br>
-            `;
-        } 
+            ${upitiOutlier}
+        `;
+        }
         else 
         {
-            document.getElementById('outlierRezultat').innerHTML='Nema rezultata za unesene kriterije.';
+            document.getElementById('outlierRezultat').innerHTML = 'Nema rezultata za unesene kriterije.';
         }
     });
     document.getElementById('generisiMojeNekretnine').addEventListener('click',()=>{
@@ -283,10 +308,31 @@ document.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('korisnicko-ime').value='';
     }
 
-    /*OVO DOVRSI*/
-    function resetHistogramF(){
+    function resetHistogramF() {
         document.getElementById('histogrami').innerHTML='';
+        let periodi=document.querySelectorAll('.period input');
+        periodi.forEach(unos=>{
+            unos.value='';
+        });
+        let cijene=document.querySelectorAll('.raspon-cijena input');
+        cijene.forEach(unos=>{
+            unos.value='';
+        });
 
+        let periodiCont=document.querySelectorAll('.period');
+        periodiCont.forEach((div,i)=>{
+            if(i>0) 
+            { 
+                div.remove();
+            }
+        });
+        let cijeneCont=document.querySelectorAll('.raspon-cijena');
+        cijeneCont.forEach((div,i)=>{
+            if(i>0)
+            {
+                div.remove();
+            }
+        });
     }
 
     document.getElementById('resetProsjecnaKvadratura').addEventListener('click', resetProsjecnaKvadraturaF);
@@ -300,16 +346,24 @@ document.addEventListener('DOMContentLoaded',()=>{
         sviPeriodi.forEach((periodEl,i)=>{
             let periodOd=parseInt(document.getElementById(`periodOd${i+1}`).value);
             let periodDo=parseInt(document.getElementById(`periodDo${i+1}`).value);
-            periodi.push({od: periodOd,
-                          do: periodDo});
+            if(!isNaN(periodOd) && !isNaN(periodDo)) 
+            {
+                periodi.push({od: periodOd,
+                              do: periodDo});
+            }
+            
         });
         let cijene=[];
         let sveCijene=document.querySelectorAll('.raspon-cijena');
         sveCijene.forEach((cijenaEl,i)=>{
             let rasponOd=parseInt(document.getElementById(`rasponOd${i+1}`).value);
             let rasponDo=parseInt(document.getElementById(`rasponDo${i+1}`).value);
-            cijene.push({od: rasponOd,
-                         do: rasponDo});
+            if(!isNaN(rasponOd) && !isNaN(rasponDo))
+            {
+                cijene.push({od: rasponOd,
+                             do: rasponDo});
+            }
+            
         });
     
         let hist=statistikaNekretnina.histogramCijena(periodi,cijene);
@@ -379,4 +433,6 @@ document.addEventListener('DOMContentLoaded',()=>{
     });
     
 });
-/*HISTOGRAM DODATI, RESET HISTOGRAMA, I MOJA NEKRETNINA POPRAVITI*/
+
+
+/*Moja nekretnina*/
