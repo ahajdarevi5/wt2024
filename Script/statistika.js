@@ -283,56 +283,93 @@ document.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('korisnicko-ime').value='';
     }
 
+    /*OVO DOVRSI*/
+    function resetHistogramF(){
+        document.getElementById('histogrami').innerHTML='';
+
+    }
+
     document.getElementById('resetProsjecnaKvadratura').addEventListener('click', resetProsjecnaKvadraturaF);
     document.getElementById('resetOutlier').addEventListener('click', resetOutlierF);
-    document.getElementById('resetHistogram').addEventListener('click', () => {
-        document.getElementById('histogrami').innerHTML='';});
+    document.getElementById('resetHistogram').addEventListener('click', resetHistogramF);
     document.getElementById('resetMojeNekretnine').addEventListener('click',resetMojeNekrentineF);
 
     document.getElementById('generisiHistogram').addEventListener('click',()=>{
-        let periodOd=parseInt(document.getElementById('periodOd1').value);
-        let periodDo=parseInt(document.getElementById('periodDo1').value);
-        let period={od: periodOd, 
-                    do: periodDo};
+        let periodi=[];
+        let sviPeriodi=document.querySelectorAll('.period');
+        sviPeriodi.forEach((periodEl,i)=>{
+            let periodOd=parseInt(document.getElementById(`periodOd${i+1}`).value);
+            let periodDo=parseInt(document.getElementById(`periodDo${i+1}`).value);
+            periodi.push({od: periodOd,
+                          do: periodDo});
+        });
+        let cijene=[];
+        let sveCijene=document.querySelectorAll('.raspon-cijena');
+        sveCijene.forEach((cijenaEl,i)=>{
+            let rasponOd=parseInt(document.getElementById(`rasponOd${i+1}`).value);
+            let rasponDo=parseInt(document.getElementById(`rasponDo${i+1}`).value);
+            cijene.push({od: rasponOd,
+                         do: rasponDo});
+        });
     
-        let rasponOd=parseInt(document.getElementById('rasponOd1').value);
-        let rasponDo=parseInt(document.getElementById('rasponDo1').value);
-        let rasponCijena={od: rasponOd,
-                          do: rasponDo};
-
+        let hist=statistikaNekretnina.histogramCijena(periodi,cijene);
+        let boje=[
+            'plum',
+            'peachpuff',
+            'lightcoral',  
+            'lightgreen',   
+            'khaki',        
+            'lightskyblue',
+        ];
+    
+        let podacizaHistogram=[];
+        for(let i=0;i<periodi.length;i++)
+        {
+            let period=periodi[i];
+            let kolor=boje[i%boje.length];
+    
+            let data=[];
+            for(let j=0;j<hist.length;j++)
+            {
+                data.push(hist[j].brojNekretnina);
+            }
+    
+            podacizaHistogram.push({
+                label:`Period ${period.od} - ${period.do}`,
+                data:data,
+                backgroundColor:kolor
+            });
+        }
+    
+        let histogramCont=document.getElementById('histogrami');
+        histogramCont.innerHTML='';
         let grafik=document.createElement('canvas');
-        document.getElementById('histogrami').appendChild(grafik);
-
-        const hist=statistikaNekretnina.histogramCijena([period],[rasponCijena]);
-        const podacizaHistogram=[{label:`Period ${period.od} - ${period.do}`,
-                                  data:[hist[0].brojNekretnina],
-                                  backgroundColor:'red'}];
-
+        histogramCont.appendChild(grafik);
+    
+        let nazivi=[];
+        for(let i=0;i<cijene.length;i++)
+        {   
+            let raspon=cijene[i];
+            nazivi.push(`Raspon ${i+1}: ${raspon.od} - ${raspon.do} KM`);
+        }
         new Chart(grafik,{
             type:'bar',
-            data: 
-            {
-                labels:[`Raspon:${rasponCijena.od} - ${rasponCijena.do} KM`],
+            data:{
+                labels:nazivi,
                 datasets:podacizaHistogram
             },
-            options: 
-            {
-                scales: 
-                {
-                    y: 
-                    {
+            options:{
+                scales:{
+                    y:{
                         beginAtZero:true,
-                        title: 
-                        {
-                            display:true,
+                        title: {
+                            display: true,
                             text:'Broj nekretnina'
                         }
                     },
-                    x: 
-                    {
-                        title: 
-                        {
-                            display:true,
+                    x:{
+                        title: {
+                            display: true,
                             text:'Raspon cijena'
                         }
                     }
@@ -340,4 +377,6 @@ document.addEventListener('DOMContentLoaded',()=>{
             }
         });
     });
+    
 });
+/*HISTOGRAM DODATI, RESET HISTOGRAMA, I MOJA NEKRETNINA POPRAVITI*/
