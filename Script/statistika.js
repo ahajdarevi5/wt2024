@@ -211,30 +211,70 @@ document.addEventListener('DOMContentLoaded',()=>{
             document.getElementById('outlierRezultat').innerHTML = 'Nema rezultata za unesene kriterije.';
         }
     });
-    document.getElementById('generisiMojeNekretnine').addEventListener('click',()=>{
-        document.getElementById('mojeNekretnineRezultat').innerHTML=``;
-        let korisnickoIme=document.getElementById('korisnicko-ime').value;
-        let mojeNekretnine=statistikaNekretnina.mojeNekretnine(korisnickoIme);
-        if(mojeNekretnine.length>0) 
+
+    const korisnikDropdown=document.getElementById("korisnik-dropdown");
+    korisnikDropdown.innerHTML=listaKorisnika.map(korisnik=> 
+        `<option value="${korisnik.id}">${korisnik.ime} ${korisnik.prezime}</option>`
+    ).join('');
+
+    document.getElementById("generisiMojeNekretnine").addEventListener("click", () => {
+        document.getElementById("mojeNekretnineRezultat").innerHTML=``;
+        const korisnikDropdown=document.getElementById("korisnik-dropdown");
+        const korisnikID=parseInt(korisnikDropdown.value);
+        const korisnik=listaKorisnika.find(k => k.id === korisnikID);
+        const mojeNekretnine=statistikaNekretnina.mojeNekretnine(korisnik);
+    
+        if (mojeNekretnine.length>0) 
         {
-            document.getElementById('mojeNekretnineRezultat').innerHTML = `
-            <strong>ID:</strong> ${mojeNekretnine.id} <br>
-            <strong>Tip nekretnine:</strong> ${mojeNekretnine.tip_nekretnine} <br>
-            <strong>Naziv:</strong> ${mojeNekretnine.naziv} <br>
-            <strong>Kvadratura:</strong> ${mojeNekretnine.kvadratura} m^2 <br>
-            <strong>Cijena:</strong> ${mojeNekretnine.cijena} KM <br>
-            <strong>Tip grijanja:</strong> ${mojeNekretnine.tip_grijanja} <br>
-            <strong>Lokacija:</strong> ${mojeNekretnine.lokacija} <br>
-            <strong>Godina izgradnje:</strong> ${mojeNekretnine.godina_izgradnje} <br>
-            <strong>Datum objave:</strong> ${mojeNekretnine.datum_objave} <br>
-            <strong>Opis:</strong> ${mojeNekretnine.opis} <br>
-            `;
-        }
+            let rez="";
+            mojeNekretnine.forEach(nekretnina => {
+                let upitiMojeNekr="";
+                if(nekretnina.upiti.length>0) 
+                {
+                    upitiMojeNekr="<strong>Upiti:</strong><ul>";
+                    nekretnina.upiti.forEach(upit =>{
+                        const korisnikUpita=listaKorisnika.find(k => k.id === upit.korisnik_id);
+                        let korisnikInfo="Nulti korisnik";
+                        if(korisnikUpita && korisnikUpita.ime && korisnikUpita.prezime)
+                        {
+                            korisnikInfo=korisnikUpita.ime+" "+korisnikUpita.prezime;
+                        }
+                        upitiMojeNekr+=`
+                            <li>
+                                <strong>Korisnik:</strong> ${korisnikInfo} <br>
+                                <strong>Tekst upita:</strong> ${upit.tekst_upita}
+                            </li>`;
+                    });
+                    upitiMojeNekr+="</ul>";
+                } 
+                else 
+                {
+                    upitiMojeNekr="<strong>Upiti:</strong> Ne postoje upiti za ovu nekretninu.";
+                }
+    
+                rez+= `
+                    <span style="font-size: 19px; font-weight: bold;">${nekretnina.naziv}</span> <br><br>
+                    <strong>ID:</strong> ${nekretnina.id} <br>
+                    <strong>Tip nekretnine:</strong> ${nekretnina.tip_nekretnine} <br>
+                    <strong>Kvadratura:</strong> ${nekretnina.kvadratura} m^2 <br>
+                    <strong>Cijena:</strong> ${nekretnina.cijena} KM <br>
+                    <strong>Tip grijanja:</strong> ${nekretnina.tip_grijanja} <br>
+                    <strong>Lokacija:</strong> ${nekretnina.lokacija} <br>
+                    <strong>Godina izgradnje:</strong> ${nekretnina.godina_izgradnje} <br>
+                    <strong>Datum objave:</strong> ${nekretnina.datum_objave} <br>
+                    <strong>Opis:</strong> ${nekretnina.opis} <br>
+                    ${upitiMojeNekr}
+                    <hr>`;
+            });
+            document.getElementById("mojeNekretnineRezultat").innerHTML=rez;
+        } 
         else 
         {
-            document.getElementById('mojeNekretnineRezultat').innerHTML='Nema nekretnina za unesenog korisnika.';
+            document.getElementById("mojeNekretnineRezultat").innerHTML="Nema nekretnina za unesenog korisnika.";
         }
     });
+    
+    
     document.getElementById('dodajPeriod').addEventListener('click',()=>{
         let periodCont=document.getElementById('periodiContainer');
         let i=periodCont.children.length+1;
@@ -262,7 +302,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         `;
         rasponiCijenaCont.appendChild(novi);
     });
-
 
     function resetProsjecnaKvadraturaF() {
         let odabirKriterija=document.getElementById("kvadraturaKriterij");
@@ -304,9 +343,10 @@ document.addEventListener('DOMContentLoaded',()=>{
         document.getElementById('outlier_ostali_kriteriji_input').value='';
     }
     function resetMojeNekrentineF(){
-        document.getElementById('mojeNekretnineRezultat').innerHTML='';
-        document.getElementById('korisnicko-ime').value='';
+        document.getElementById("mojeNekretnineRezultat").innerHTML='';
+        document.getElementById("korisnik-dropdown").value='';
     }
+        
 
     function resetHistogramF() {
         document.getElementById('histogrami').innerHTML='';

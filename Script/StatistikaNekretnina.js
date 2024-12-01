@@ -9,18 +9,19 @@ let StatistikaNekretnina=function () {
         return listaNekretnina;
     };
     let prosjecnaKvadratura=function (kriterij) {
-        const filtriraneNekretnine=spisakNekretnina.filtrirajNekretnine(kriterij);
+        const filtriraneNekretnine = spisakNekretnina.filtrirajNekretnine(kriterij);
         if (filtriraneNekretnine.length===0) 
         {
-            return 0;
+            return 'Nema nekretnina koje zadovoljavaju zadati kriterij.';
         }
         let ukupno=0;
-        for(let i=0;i<filtriraneNekretnine.length;i++)
+        for (let i=0;i<filtriraneNekretnine.length; i++) 
         {
             ukupno+=filtriraneNekretnine[i].kvadratura;
         }
         return ukupno/filtriraneNekretnine.length;
     };
+    
 
     let outlier=function(kriterij,nazivSvojstva) {
         const filtriraneNekretnine=spisakNekretnina.filtrirajNekretnine(kriterij);
@@ -48,23 +49,19 @@ let StatistikaNekretnina=function () {
         }
         return outlierNekretnina;
     };
-    let mojeNekretnine = function(username) {
-        const korisnik=listaKorisnika.find(k => k.username === username);
-        if (!korisnik) 
-        {
-            return null;
-        }
-        const nekretnine=spisakNekretnina.filtrirajNekretnine({})
-            .filter(nekretnina => nekretnina.upiti.some(upit => upit.korisnik_id===korisnik.id));
-
-        nekretnine.sort((a,b) => {
-            const prviUpiti=a.upiti.filter(upit => upit.korisnik_id===korisnik.id).length;
-            const drugiUpiti=b.upiti.filter(upit => upit.korisnik_id===korisnik.id).length;
-            return drugiUpiti-prviUpiti; 
-        });
     
+    let mojeNekretnine = function(user) {
+        const nekretnine=listaNekretnina.filter(nekretnina =>
+            nekretnina.upiti.some(upit => upit.korisnik_id === user.id)
+        );
+        nekretnine.sort((a,b)=>{
+            const prviUpiti=a.upiti.filter(upit => upit.korisnik_id === user.id).length;
+            const drugiUpiti=b.upiti.filter(upit => upit.korisnik_id === user.id).length;
+            return drugiUpiti-prviUpiti;
+        });
         return nekretnine;
     };
+    
     
     let histogramCijena = function (periodi,rasponiCijena) {
         const rez=[];
