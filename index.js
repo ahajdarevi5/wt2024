@@ -250,24 +250,25 @@ app.post('/upit', async (req, res) => {
   const { nekretnina_id, tekst_upita } = req.body;
 
   try {
-    // Read user data from the JSON file
-    const users = await readJsonFile('korisnici');
+    /*postojeci kod*/
+    const users=await readJsonFile('korisnici');
+    const nekretnine=await readJsonFile('nekretnine');
+    const loggedInUser=users.find((user) => user.username === req.session.user.username);
+    const nekretnina=nekretnine.find((property) => property.id === nekretnina_id);
 
-    // Read properties data from the JSON file
-    const nekretnine = await readJsonFile('nekretnine');
-
-    // Find the user by username
-    const loggedInUser = users.find((user) => user.username === req.session.user.username);
-
-    // Check if the property with nekretnina_id exists
-    const nekretnina = nekretnine.find((property) => property.id === nekretnina_id);
-
-    if (!nekretnina) {
-      // Property not found
+    if (!nekretnina) 
+    {
       return res.status(400).json({ greska: `Nekretnina sa id-em ${nekretnina_id} ne postoji` });
     }
 
-    // Add a new query to the property's queries array
+    const sviUpiti=nekretnina.upiti.filter(
+      (query) => query.korisnik_id === loggedInUser.id
+    );
+
+    if (sviUpiti.length>=3) {
+      return res.status(429).json({ greska: 'Previse upita za istu nekretninu.' });
+    }
+
     nekretnina.upiti.push({
       korisnik_id: loggedInUser.id,
       tekst_upita: tekst_upita
@@ -277,7 +278,9 @@ app.post('/upit', async (req, res) => {
     await saveJsonFile('nekretnine', nekretnine);
 
     res.status(200).json({ poruka: 'Upit je uspješno dodan' });
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error('Error processing query:', error);
     res.status(500).json({ greska: 'Internal Server Error' });
   }
@@ -446,6 +449,39 @@ app.post('/marketing/osvjezi/klikovi', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+app.get('/nekretnine/top5',async (req,res) => {
+  const {lokacija}=req.query;
+
+  if (!lokacija) 
+  {
+    return res.status(400).json({ greska: 'Niste postavili parametar za lokaciju.' });
+  }
+
+  try 
+  {
+    const izDatoteke=await fs.readFile(path.join(__dirname,'data','nekretnine.json'),'utf-8');
+    const sveNekretnine=JSON.parse(izDatoteke);
+
+    const filtriraneNekr=sveNekretnine.filter((nekretnina)=>nekretnina.lokacija.toLowerCase() === lokacija.toLowerCase()
+    );
+
+    const sortNekr=filtriraneNekr.sort((a,b)=>
+        new Date(b.datum_objave.split('.').reverse().join('-')) -
+        new Date(a.datum_objave.split('.').reverse().join('-'))
+    );
+
+    const rez=sortNekr.slice(0,5);
+
+    res.status(200).json(rez);
+  } 
+  catch (error) 
+  {
+    console.error('Greška pri čitanju datoteke!',error);
+    res.status(500).json({ greska: 'Interna greška servera.' });
+  }
+});
+
 
 // Start server
 app.listen(PORT, () => {

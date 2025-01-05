@@ -60,3 +60,6 @@
 [2025-01-03T14:45:40.477Z] - username: "noviKorisnik" - status: "neuspješno"
 [2025-01-03T15:18:11.653Z] - username: "noviKorisnik" - status: "neuspješno"
 [2025-01-03T15:18:19.640Z] - username: "noviKorisnik" - status: "uspješno"
+[2025-01-05T17:05:36.902Z] - username: "noviKorisnik" - status: "uspješno"
+[2025-01-05T17:06:41.587Z] - username: "noviKorisnik" - status: "uspješno"
+[2025-01-05T17:12:38.967Z] - username: "noviKorisnik" - status: "uspješno"
