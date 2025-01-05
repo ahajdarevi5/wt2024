@@ -185,6 +185,11 @@ const PoziviAjax = (() => {
         ajax.open("POST", "http://localhost:3000/logout", true)
         ajax.send()
     }
+    function getTop5Nekretnina(lokacija,fnCallback)
+    {
+        ajaxRequest('GET',`/nekretnine/top5?lokacija=${encodeURIComponent(lokacija)}`,null,fnCallback);
+    }
+    
 
     return {
         postLogin: impl_postLogin,
@@ -192,6 +197,7 @@ const PoziviAjax = (() => {
         getKorisnik: impl_getKorisnik,
         putKorisnik: impl_putKorisnik,
         postUpit: impl_postUpit,
-        getNekretnine: impl_getNekretnine
+        getNekretnine: impl_getNekretnine,
+        getTop5Nekretnina
     };
 })();

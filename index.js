@@ -450,6 +450,8 @@ app.post('/marketing/osvjezi/klikovi', async (req, res) => {
   }
 });
 
+
+/*******************************************************/
 app.get('/nekretnine/top5',async (req,res) => {
   const {lokacija}=req.query;
 
@@ -482,6 +484,46 @@ app.get('/nekretnine/top5',async (req,res) => {
   }
 });
 
+
+app.get('/upiti/moji', async (req, res) => {
+  if (!req.session.user) 
+  {
+    return res.status(401).json({ greska:'Neautorizovan pristup' });
+  }
+
+  try {
+    const izDatoteke=await fs.readFile(path.join(__dirname,'data','nekretnine.json'),'utf-8');
+    const nekretnine=JSON.parse(izDatoteke);
+    const korisnikId=req.session.user.id;
+    const rez=[];
+
+    for (const nekretnina of nekretnine) 
+    {
+      for (const upit of nekretnina.upiti) 
+      {
+        if (upit.korisnik_id === korisnikId) 
+        {
+          rez.push({
+            id_nekretnine: nekretnina.id,
+            tekst_upita: upit.tekst_upita,
+          });
+        }
+      }
+    }
+
+    if (rez.length===0) 
+    {
+      return res.status(404).json([]); 
+    }
+
+    res.status(200).json(rez);
+  } 
+  catch (error)
+  {
+    console.error('Greška pri čitanju datoteke:', error);
+    res.status(500).json({ greska: 'Interna greška servera.' });
+  }
+});
 
 // Start server
 app.listen(PORT, () => {
