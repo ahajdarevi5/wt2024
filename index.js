@@ -525,6 +525,79 @@ app.get('/upiti/moji', async (req, res) => {
   }
 });
 
+
+app.get('/nekretnina/:id',async (req, res) => {
+  const idNekretnine=parseInt(req.params.id); 
+
+  try {
+    const izDatoteke=await fs.readFile(path.join(__dirname,'data','nekretnine.json'),'utf-8');
+    const sveNekretnine=JSON.parse(izDatoteke);
+    const nekr=sveNekretnine.find((n) => n.id===idNekretnine);
+
+    if (!nekr) 
+    {
+      return res.status(404).json({greska:'Nekretnina nije pronađena.' });
+    }
+
+    nekr.upiti=nekr.upiti.slice(-3);
+
+    res.status(200).json(nekr);
+  } 
+  catch (error)
+  {
+    console.error('Greska pri citanju datoteke:', error);
+    res.status(500).json({ greska: 'Interna greska servera.' });
+  }
+});
+
+app.get('/next/upiti/nekretnina/:id',async (req, res)=>{
+  const idNekretnine=parseInt(req.params.id);
+  const page=parseInt(req.query.page);
+
+
+  /*PAGE = 0 ????? ispravi*/
+  if (page<0 || isNaN(page))
+  {
+      return res.status(400).json({greska:'Neispravan parametar.' });
+  }
+
+  try {
+    const izDatoteke=await fs.readFile(path.join(__dirname,'data','nekretnine.json'),'utf-8');
+    const sveNekretnine=JSON.parse(izDatoteke);
+    const nekr=sveNekretnine.find((n)=>n.id===idNekretnine);
+    if (!nekr)
+    {
+      return res.status(404).json({greska:'Nekretnina nije pronadjena.' });
+    }
+
+    const ukupnoUpita=nekr.upiti.length;
+    const prvi=Math.max(0,ukupnoUpita-(page+1)*3);
+    const zadnji=ukupnoUpita-page*3;
+    if (prvi>=ukupnoUpita || prvi===zadnji)
+    {
+      return res.status(404).json([]);
+    }
+
+    const rez=[];
+    for (let i=prvi;i<zadnji; i++) 
+    {
+      if(nekr.upiti[i])
+      { 
+        rez.push({
+          korisnik_id: nekr.upiti[i].korisnik_id,
+          tekst_upita: nekr.upiti[i].tekst_upita,
+        });
+      }
+    }
+    res.status(200).json(rez);
+  }
+  catch (error)
+  {
+    console.error('Greska pri citanju datoteke:', error);
+    res.status(500).json({ greska:'Interna greska servera.' });
+  }
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
