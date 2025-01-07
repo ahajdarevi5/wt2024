@@ -189,6 +189,18 @@ const PoziviAjax = (() => {
     {
         ajaxRequest('GET',`/nekretnine/top5?lokacija=${encodeURIComponent(lokacija)}`,null,fnCallback);
     }
+    function getMojiUpiti(fnCallback) 
+    {
+        ajaxRequest('GET','/upiti/moji',null,fnCallback);
+    }
+    function getNekretnina(nekretnina_id,fnCallback) 
+    {
+        ajaxRequest('GET',`/nekretnina/${nekretnina_id}`,null,fnCallback);
+    }
+    function getNextUpiti(nekretnina_id,page,fnCallback)
+    {
+        ajaxRequest('GET',`/next/upiti/nekretnina/${nekretnina_id}?page=${page}`,null,fnCallback);
+    }
     
 
     return {
@@ -198,6 +210,9 @@ const PoziviAjax = (() => {
         putKorisnik: impl_putKorisnik,
         postUpit: impl_postUpit,
         getNekretnine: impl_getNekretnine,
-        getTop5Nekretnina
+        getTop5Nekretnina,
+        getMojiUpiti,
+        getNekretnina,
+        getNextUpiti
     };
 })();

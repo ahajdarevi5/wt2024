@@ -487,9 +487,9 @@ app.get('/nekretnine/top5',async (req,res) => {
 
 app.get('/upiti/moji', async (req, res) => {
   if (!req.session.user) 
-  {
-    return res.status(401).json({ greska:'Neautorizovan pristup' });
-  }
+    {
+      return res.status(401).json({ greska:'Neautorizovan pristup' });
+    }
 
   try {
     const izDatoteke=await fs.readFile(path.join(__dirname,'data','nekretnine.json'),'utf-8');
@@ -597,6 +597,12 @@ app.get('/next/upiti/nekretnina/:id',async (req, res)=>{
     res.status(500).json({ greska:'Interna greska servera.' });
   }
 });
+
+//za prikaz
+app.get('/mojiUpiti.html', async (req, res) => {
+  await serveHTMLFile(req, res, 'mojiUpiti.html');
+});
+
 
 // Start server
 app.listen(PORT, () => {
