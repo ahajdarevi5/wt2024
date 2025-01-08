@@ -54,5 +54,27 @@
         "tekst_upita": "Da li je nekretnina još dostupna?"
       }
     ]
+  },
+  {
+    "id": 3,
+    "tip_nekretnine": "Kuća",
+    "naziv": "Porodična kuća",
+    "kvadratura": 140,
+    "cijena": 430000,
+    "tip_grijanja": "centralno",
+    "lokacija": "Novi Grad",
+    "godina_izgradnje": 2015,
+    "datum_objave": "13.12.2023.",
+    "opis": "Magnis dis parturient montes.",
+    "upiti": [
+      {
+        "korisnik_id": 1,
+        "tekst_upita":"Nullam eu pede mollis pretium."
+      },
+      {
+        "korisnik_id": 2,
+        "tekst_upita":"Phasellus viverra nulla."
+      }
+    ]
   }
 ]

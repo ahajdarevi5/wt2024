@@ -1,13 +1,9 @@
 function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
-    // pozivanje metode za filtriranje
+    const gridlista=divReferenca.querySelector('.grid-lista-nekretnina');
+    gridlista.innerHTML='';
     const filtriraneNekretnine = instancaModula.filtrirajNekretnine({ tip_nekretnine: tip_nekretnine });
-    
-    // iscrtavanje elemenata u divReferenca element
 
-    // Ciscenje svih elemenata liste
-    divReferenca.innerHTML = '';
-
-    if (filtriraneNekretnine.length === 0) {
+    if (filtriraneNekretnine.length === 0){
         divReferenca.innerHTML = '<p>Trenutno nema dostupnih nekretnina ovoga tipa.</p>';
     } else {
         filtriraneNekretnine.forEach(nekretnina => {
@@ -32,7 +28,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
             detaljiElement.classList.add('detalji-nekretnine');
             detaljiElement.innerHTML = `
                 <h3>${nekretnina.naziv}</h3>
-                <p>Kvadratura: ${nekretnina.kvadratura} m²</p>
+                <p>Kvadratura: ${nekretnina.kvadratura} m^2</p>
             `;
             nekretninaElement.appendChild(detaljiElement);
 
@@ -55,139 +51,28 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
 }
 
 
-const listaNekretnina = [{
-    id: 1,
-    tip_nekretnine: "Stan",
-    naziv: "Useljiv stan Sarajevo",
-    kvadratura: 58,
-    cijena: 232000,
-    tip_grijanja: "plin",
-    lokacija: "Novo Sarajevo",
-    godina_izgradnje: 2019,
-    datum_objave: "01.10.2023.",
-    opis: "Sociis natoque penatibus.",
-    upiti: [{
-        korisnik_id: 1,
-        tekst_upita: "Nullam eu pede mollis pretium."
-    },
-    {
-        korisnik_id: 2,
-        tekst_upita: "Phasellus viverra nulla."
-    }]
-},{
-    id: 1,
-    tip_nekretnine: "Stan",
-    naziv: "Useljiv stan Sarajevo",
-    kvadratura: 58,
-    cijena: 32000,
-    tip_grijanja: "plin",
-    lokacija: "Novo Sarajevo",
-    godina_izgradnje: 2019,
-    datum_objave: "01.10.2009.",
-    opis: "Sociis natoque penatibus.",
-    upiti: [{
-        korisnik_id: 1,
-        tekst_upita: "Nullam eu pede mollis pretium."
-    },
-    {
-        korisnik_id: 2,
-        tekst_upita: "Phasellus viverra nulla."
-    }]
-},{
-    id: 1,
-    tip_nekretnine: "Stan",
-    naziv: "Useljiv stan Sarajevo",
-    kvadratura: 58,
-    cijena: 232000,
-    tip_grijanja: "plin",
-    lokacija: "Novo Sarajevo",
-    godina_izgradnje: 2019,
-    datum_objave: "01.10.2003.",
-    opis: "Sociis natoque penatibus.",
-    upiti: [{
-        korisnik_id: 1,
-        tekst_upita: "Nullam eu pede mollis pretium."
-    },
-    {
-        korisnik_id: 2,
-        tekst_upita: "Phasellus viverra nulla."
-    }]
-},
-{
-    id: 2,
-    tip_nekretnine: "Kuća",
-    naziv: "Mali poslovni prostor",
-    kvadratura: 20,
-    cijena: 70000,
-    tip_grijanja: "struja",
-    lokacija: "Centar",
-    godina_izgradnje: 2005,
-    datum_objave: "20.08.2023.",
-    opis: "Magnis dis parturient montes.",
-    upiti: [{
-        korisnik_id: 2,
-        tekst_upita: "Integer tincidunt."
-    }
-    ]
-},
-{
-    id: 3,
-    tip_nekretnine: "Kuća",
-    naziv: "Mali poslovni prostor",
-    kvadratura: 20,
-    cijena: 70000,
-    tip_grijanja: "struja",
-    lokacija: "Centar",
-    godina_izgradnje: 2005,
-    datum_objave: "20.08.2023.",
-    opis: "Magnis dis parturient montes.",
-    upiti: [{
-        korisnik_id: 2,
-        tekst_upita: "Integer tincidunt."
-    }
-    ]
-},
-{
-    id: 4,
-    tip_nekretnine: "Kuća",
-    naziv: "Mali poslovni prostor",
-    kvadratura: 20,
-    cijena: 70000,
-    tip_grijanja: "struja",
-    lokacija: "Centar",
-    godina_izgradnje: 2005,
-    datum_objave: "20.08.2023.",
-    opis: "Magnis dis parturient montes.",
-    upiti: [{
-        korisnik_id: 2,
-        tekst_upita: "Integer tincidunt."
-    }
-    ]
-}]
+const listaNekretnina = []
 
-const listaKorisnika = [{
-    id: 1,
-    ime: "Neko",
-    prezime: "Nekic",
-    username: "username1",
-},
-{
-    id: 2,
-    ime: "Neko2",
-    prezime: "Nekic2",
-    username: "username2",
-}]
+const listaKorisnika = []
 
 const divStan = document.getElementById("stan");
 const divKuca = document.getElementById("kuca");
 const divPp = document.getElementById("pp");
 
-//instanciranje modula
+// Instanciranje modula
 let nekretnine = SpisakNekretnina();
-nekretnine.init(listaNekretnina, listaKorisnika);
 
+// Pozivamo funkciju za dohvat nekretnina sa servera
+PoziviAjax.getNekretnine((error, listaNekretnina) => {
+    if (error) {
+        console.error("Greška prilikom dohvatanja nekretnina sa servera:", error);
+    } else {
+        // Inicijalizacija modula sa dobavljenim podacima
+        nekretnine.init(listaNekretnina, listaKorisnika);
 
-//pozivanje funkcije
-spojiNekretnine(divStan, nekretnine, "Stan");
-spojiNekretnine(divKuca, nekretnine, "Kuća");
-spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+        // Pozivamo funkciju za prikaz nekretnina
+        spojiNekretnine(divStan, nekretnine, "Stan");
+        spojiNekretnine(divKuca, nekretnine, "Kuća");
+        spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+    }
+});
