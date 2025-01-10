@@ -1,7 +1,51 @@
 document.addEventListener("DOMContentLoaded",()=>{
-    const link=document.getElementById("lokacija-link");
+    const link=document.getElementById("lokacija");
     const rez=document.getElementById("rezultat");
-  
+
+    const wls=window.location.search; 
+    const nekretninaId=wls.split("=")[1]; 
+    if(!nekretninaId)
+    {
+        alert("Nije naveden ID nekretnine.");
+        return;
+    }
+    PoziviAjax.getNekretnina(nekretninaId,(err,data)=>{
+      if(err)
+      {
+          console.error("Greska pri ucitavanju nekretnine:", err);
+          document.body.innerHTML='Nekretnina nije pronadjena.';
+      }
+      else
+      {
+          const nekr=JSON.parse(data);
+          document.getElementById("naziv").textContent=nekr.naziv;
+          document.getElementById("kvadratura").textContent=nekr.kvadratura;
+          document.getElementById("cijena").textContent=nekr.cijena;
+          document.getElementById("tip-grijanja").textContent=nekr.tip_grijanja;
+          document.getElementById("lokacija").textContent=nekr.lokacija;
+          document.getElementById("godina-izgradnje").textContent=nekr.godina_izgradnje;
+          document.getElementById("datum-objave").textContent=nekr.datum_objave;
+          document.getElementById("opis-nekretnine").textContent=nekr.opis;
+          document.getElementById("slika").src=`../Resources/${nekr.id}.jpg`;
+
+          const upitiDiv=document.getElementById("upiti");
+          if(nekr.upiti && nekr.upiti.length>0) 
+          {
+            nekr.upiti.forEach((upit)=>{
+                  const upitDiv=document.createElement("div");
+                  upitDiv.classList.add("upit");
+                  upitDiv.innerHTML=`<p><strong>Korisnik ${upit.korisnik_id}:</strong></p>
+                                    <p>${upit.tekst_upita}</p>`;
+                  upitiDiv.appendChild(upitDiv);
+              });
+          }
+          else
+          {
+              upitiDiv.innerHTML='Trenutno nema upita za ovu nekretninu.';
+          }
+      }
+  });
+
     link.addEventListener("click",(event)=>{
         event.preventDefault(); 
         const lokacija=link.textContent.trim(); 
@@ -26,7 +70,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                         <div class="nekretnina">
                         <h3>${nekretnina.naziv}</h3>
                         <p><strong>Tip nekretnine:</strong> ${nekretnina.tip_nekretnine}</p>
-                        <p><strong>Kvadratura:</strong> ${nekretnina.kvadratura} m²</p>
+                        <p><strong>Kvadratura:</strong> ${nekretnina.kvadratura} m2</p>
                         <p><strong>Cijena:</strong> ${nekretnina.cijena} KM</p>
                         <p><strong>Tip grijanja:</strong> ${nekretnina.tip_grijanja}</p>
                         <p><strong>Lokacija:</strong> ${nekretnina.lokacija}</p>
@@ -45,5 +89,5 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
       });
     });
-  });
+});
   

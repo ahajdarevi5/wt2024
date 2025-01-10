@@ -112,3 +112,8 @@ body {
       display:block;
     }
   }
+
+#lokacija{
+    color: blue;
+    text-decoration: underline;
+}

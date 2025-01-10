@@ -28,20 +28,21 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
             detaljiElement.classList.add('detalji-nekretnine');
             detaljiElement.innerHTML = `
                 <h3>${nekretnina.naziv}</h3>
-                <p>Kvadratura: ${nekretnina.kvadratura} m^2</p>
+                <p>Kvadratura: ${nekretnina.kvadratura} m2</p>
             `;
             nekretninaElement.appendChild(detaljiElement);
 
             const cijenaElement = document.createElement('div');
             cijenaElement.classList.add('cijena-nekretnine');
-            cijenaElement.innerHTML = `<p>Cijena: ${nekretnina.cijena} BAM</p>`;
+            cijenaElement.innerHTML = `<p>Cijena: ${nekretnina.cijena} KM</p>`;
             nekretninaElement.appendChild(cijenaElement);
 
             const detaljiDugme = document.createElement('a');
-            detaljiDugme.href = '../HTML/detalji.html'; // hardkodiran html
+            detaljiDugme.href=`detalji.html?id=${nekretnina.id}`;
             detaljiDugme.classList.add('detalji-dugme');
             detaljiDugme.textContent = 'Detalji';
             nekretninaElement.appendChild(detaljiDugme);
+            
 
 
             // Dodavanje kreiranog elementa u divReferenci

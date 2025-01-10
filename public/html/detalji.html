@@ -6,61 +6,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalji</title>
     <link rel="stylesheet" type="text/css" href="../style/detalji.css">
-    <script src="../scripts/carousel.js"></script>
-    <script src="../scripts/detalji.js"></script>
     <script src="../scripts/PoziviAjax.js"></script>
+    <script src="../scripts/detalji.js" defer></script>
+    <script src="../scripts/carousel.js"></script>
 </head>
+
 <body>
     <iframe src="meni.html"></iframe>
 
     <div id="osnovno">
-        <img src="/Resources/stan/stan1.jpg" alt="Nekretnina">
-        <p><strong>Naziv:</strong> Useljiv stan sarajevo</p>
-        <p><strong>Kvadratura:</strong> 58 m²</p>
-        <p><strong>Cijena:</strong> 232,000 KM</p>
+        <img id="slika" src="" alt="Slika nekretnine">
+        <p><strong>Naziv:</strong> <span id="naziv"></span></p>
+        <p><strong>Kvadratura:</strong> <span id="kvadratura"></span> m²</p>
+        <p><strong>Cijena:</strong> <span id="cijena"></span> KM</p>
     </div>
 
     <h3>DETALJI</h3>
     <div id="detalji">
         <div id="kolona1">
-            <p><strong>Tip grijanja:</strong> plin</p>
-            <p><strong>Lokacija:</strong> <a href="#" id="lokacija-link">Novo Sarajevo</a></p>
-            <div id="rezultat">
-               
-            </div>
+            <p><strong>Tip grijanja:</strong> <span id="tip-grijanja"></span></p>
+            <p><strong>Lokacija:</strong> <span id="lokacija"></span></p>
+            <div id="rezultat"></div>
         </div>
         <div id="kolona2">
-            <p><strong>Godina izgradnje:</strong> 2019</p>
-            <p><strong>Datum objave oglasa:</strong> 2022</p>
+            <p><strong>Godina izgradnje:</strong> <span id="godina-izgradnje"></span></p>
+            <p><strong>Datum objave oglasa:</strong> <span id="datum-objave"></span></p>
         </div>
         <div id="opis">
-            <p><strong>Opis:</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore dignissimos eos
-                tempore, mollitia doloribus vitae molestiae ullam ut repudiandae alias corrupti, rem nisi officia at
-                perferendis dolorum iusto dolores nobis!</p>
+            <p><strong>Opis:</strong> <span id="opis-nekretnine"></span></p>
         </div>
     </div>
-
 
     <h3>UPITI</h3>
-    <div id="upiti">
-        <div class="upit">
-            <p><strong>Username 1:</strong></p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque et architecto maiores consequuntur soluta
-                voluptas, molestias libero illo minus obcaecati pariatur provident ipsum id dicta quod. Eveniet ipsum
-                iure ullam?</p>
-        </div>
-        <div class="upit">
-            <p><strong>Username 2:</strong></p>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae dolore perferendis dolor, aperiam
-                voluptatibus neque explicabo qui, quam, illo suscipit sint quo officia dolores consequatur voluptatem.
-                Laborum dolor at placeat!</p>
-        </div>
-        
-    </div>
+    <div id="upiti"></div>
     <div class="dugmad">
-        <button class="btn-preth">&lt</button>
-        <button class="btn-sljedeci">&gt</button>
+        <button class="btn-preth">&lt;</button>
+        <button class="btn-sljedeci">&gt;</button>
     </div>
 </body>
-
 </html>
