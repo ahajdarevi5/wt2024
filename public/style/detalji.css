@@ -71,17 +71,13 @@ body {
   }
   
   .upit {
-    display:none;
+    display:block !important;
     border: 1px solid #000;
     padding: 10px;
     margin-bottom: 10px;
     background-color: white;
   }
 
-  .upit.prikazan {
-    display:block;
-  
-  }
   .btn-preth, .btn-sljedeci{
     display:inline-block;
     background-color: transparent;

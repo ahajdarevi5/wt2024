@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded",() => {
     const dugmeLijevo=document.querySelector('.btn-preth');
     const dugmeDesno=document.querySelector('.btn-sljedeci');
     const glavniElement=document.querySelector('#upiti');
-    const sviElementi=Array.from(document.querySelectorAll('.upit'));
+    let sviElementi=Array.from(document.querySelectorAll('.upit'));
     function CarouselFunc() {
         if(sviElementi.length==0){
             glavniElement.innerHTML="<p>Nema dostupnih upita.<p>";
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded",() => {
             } 
             else 
             {
-                console.error("Gresknkjnkjnklka!");
+                console.error("Greskaaa!");
             }
         }
     } 

@@ -17,34 +17,44 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
       else
       {
-          const nekr=JSON.parse(data);
-          document.getElementById("naziv").textContent=nekr.naziv;
-          document.getElementById("kvadratura").textContent=nekr.kvadratura;
-          document.getElementById("cijena").textContent=nekr.cijena;
-          document.getElementById("tip-grijanja").textContent=nekr.tip_grijanja;
-          document.getElementById("lokacija").textContent=nekr.lokacija;
-          document.getElementById("godina-izgradnje").textContent=nekr.godina_izgradnje;
-          document.getElementById("datum-objave").textContent=nekr.datum_objave;
-          document.getElementById("opis-nekretnine").textContent=nekr.opis;
-          document.getElementById("slika").src=`../Resources/${nekr.id}.jpg`;
+        const nekr=JSON.parse(data);
+        document.getElementById("naziv").textContent=nekr.naziv;
+        document.getElementById("kvadratura").textContent=nekr.kvadratura;
+        document.getElementById("cijena").textContent=nekr.cijena;
+        document.getElementById("tip-grijanja").textContent=nekr.tip_grijanja;
+        document.getElementById("lokacija").textContent=nekr.lokacija;
+        document.getElementById("godina-izgradnje").textContent=nekr.godina_izgradnje;
+        document.getElementById("datum-objave").textContent=nekr.datum_objave;
+        document.getElementById("opis-nekretnine").textContent=nekr.opis;
+        document.getElementById("slika").src=`../Resources/${nekr.id}.jpg`;
 
-          const upitiDiv=document.getElementById("upiti");
-          if(nekr.upiti && nekr.upiti.length>0) 
-          {
-            nekr.upiti.forEach((upit)=>{
-                  const upitDiv=document.createElement("div");
-                  upitDiv.classList.add("upit");
-                  upitDiv.innerHTML=`<p><strong>Korisnik ${upit.korisnik_id}:</strong></p>
-                                    <p>${upit.tekst_upita}</p>`;
-                  upitiDiv.appendChild(upitDiv);
-              });
-          }
-          else
-          {
-              upitiDiv.innerHTML='Trenutno nema upita za ovu nekretninu.';
-          }
-      }
-  });
+        const upitiDiv=document.getElementById("upiti");
+        if(!upitiDiv)
+        {
+            console.error("Element sa ID-jem 'upiti' nije pronađen!");
+            return;
+        }
+        let sviUpiti=[];
+        if(nekr.upiti && nekr.upiti.length>0)
+        {
+            for (let i=0;i<nekr.upiti.length;i++)
+            {
+                const upit=nekr.upiti[i];
+                const upitDiv=document.createElement("div");
+                upitDiv.classList.add("upit");
+                upitDiv.innerHTML=`<p><strong>Korisnik ${upit.korisnik_id}:</strong></p>
+                                   <p>${upit.tekst_upita}</p>`;
+                sviUpiti.push(upitDiv);
+                upitiDiv.appendChild(upitDiv);
+            }
+            window.izbrisi(sviUpiti);
+        } 
+        else
+        {
+            upitiDiv.innerHTML='<p>Trenutno nema upita za ovu nekretninu.</p>';
+        }
+    }
+});
 
     link.addEventListener("click",(event)=>{
         event.preventDefault(); 
@@ -89,6 +99,8 @@ document.addEventListener("DOMContentLoaded",()=>{
         }
       });
     });
+   
+
     
 });
   
