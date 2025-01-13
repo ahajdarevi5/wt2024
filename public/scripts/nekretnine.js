@@ -2,7 +2,6 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     const gridlista=divReferenca.querySelector('.grid-lista-nekretnina');
     gridlista.innerHTML='';
     const filtriraneNekretnine = instancaModula.filtrirajNekretnine({ tip_nekretnine: tip_nekretnine });
-
     if (filtriraneNekretnine.length === 0){
         divReferenca.innerHTML = '<p>Trenutno nema dostupnih nekretnina ovoga tipa.</p>';
     } else {
@@ -46,7 +45,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
 
 
             // Dodavanje kreiranog elementa u divReferenci
-            divReferenca.appendChild(nekretninaElement);
+            gridlista.appendChild(nekretninaElement);
         });
     }
 }

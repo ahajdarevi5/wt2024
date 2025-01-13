@@ -21,15 +21,15 @@
       },
       {
         "korisnik_id": 3,
-        "tekst_upita": "Da li je stan još dostupan 1?"
+        "tekst_upita": "aaa"
       },
       {
         "korisnik_id": 3,
-        "tekst_upita": "Da li je stan još dostupan 2?"
+        "tekst_upita": "bbbbbbbbbbbbbbb?"
       },
       {
         "korisnik_id": 3,
-        "tekst_upita": "Da li je stan još dostupan 3?"
+        "tekst_upita": "cccccccccccccccccccccccccccc"
       }
     ]
   },
@@ -74,6 +74,36 @@
       {
         "korisnik_id": 2,
         "tekst_upita":"Phasellus viverra nulla."
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "tip_nekretnine": "Stan",
+    "naziv": "Useljiv stan Sarajevo",
+    "kvadratura": 30,
+    "cijena": 130000,
+    "tip_grijanja": "struja",
+    "lokacija": "Novo Sarajevo",
+    "godina_izgradnje": 2013,
+    "datum_objave": "11.12.2023.",
+    "opis": "Magnis dis parturient montes.",
+    "upiti": [
+      {
+        "korisnik_id": 3,
+        "tekst_upita": "Upit pod brojem 1?"
+      },
+      {
+        "korisnik_id": 2,
+        "tekst_upita": "Upit broj 2?"
+      },
+      {
+        "korisnik_id": 1,
+        "tekst_upita": "Jos jedan upit broj 3?"
+      },
+      {
+        "korisnik_id": 3,
+        "tekst_upita": "Dodatni upit korisnika 3?"
       }
     ]
   }

@@ -47,7 +47,8 @@ iframe {
     padding: 30px;
     background-color: white;
     text-align: center;
-    width:300px;
+    width:330px;
+    margin-bottom:10px;
     height: 464px;
     box-sizing:border-box;
 }
