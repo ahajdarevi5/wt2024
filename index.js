@@ -554,11 +554,9 @@ app.get('/next/upiti/nekretnina/:id',async (req, res)=>{
   const idNekretnine=parseInt(req.params.id);
   const page=parseInt(req.query.page);
 
-
-  /*PAGE = 0 ????? ispravi*/
-  if (page<0 || isNaN(page))
+  if (page<0)
   {
-      return res.status(400).json({greska:'Neispravan parametar.' });
+      return res.status(200).json([]);
   }
 
   try {
