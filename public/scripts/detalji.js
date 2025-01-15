@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded",()=>{
     const dugmeDalje=document.querySelector(".btn-sljedeci");
     const dugmeVrati=document.querySelector(".btn-preth");
 
-
     const wls=window.location.search;
     const nekretninaId=wls.split("=")[1];
 
@@ -130,6 +129,11 @@ document.addEventListener("DOMContentLoaded",()=>{
         event.preventDefault();
         const lokacija=link.textContent.trim();
 
+        if (rez.style.display!=="none")
+        {
+            rez.style.display="none"; 
+            return; 
+        }
         PoziviAjax.getTop5Nekretnina(lokacija,(err,data)=>{
             if(err)
             {
@@ -165,6 +169,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                     htmlContent=`<p>Trenutno nemamo nekretnina za ovu lokaciju.</p>`;
                 }
                 rez.innerHTML=htmlContent;
+                rez.style.display="block";
             }
         });
     });

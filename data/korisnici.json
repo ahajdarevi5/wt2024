@@ -19,5 +19,12 @@
     "prezime": "Korisnik",
     "username": "noviKorisnik",
     "password": "$2b$10$nMwv9btxZJb3WnBIpLgPUeUvYeWKes7mnWlO6f4.5QHeGB5iHIfj2"
+  },
+  {
+    "id": 4,
+    "ime": "Novi",
+    "prezime": "Korisnik",
+    "username": "noviKorisnikProba",
+    "password": "$2b$10$nMwv9btxZJb3WnBIpLgPUeUvYeWKes7mnWlO6f4.5QHeGB5iHIfj2"
   }
 ]

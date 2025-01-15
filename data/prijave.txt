@@ -147,3 +147,7 @@
 [2025-01-15T15:11:21.539Z] - username: "noviKorisnik" - status: "uspješno"
 [2025-01-15T21:39:45.263Z] - username: "noviKorisnik" - status: "uspješno"
 [2025-01-15T22:19:08.619Z] - username: "noviKorisnik" - status: "uspješno"
+[2025-01-15T22:22:53.593Z] - username: "noviKorisnik" - status: "neuspješno"
+[2025-01-15T22:22:55.779Z] - username: "noviKorisnik" - status: "neuspješno"
+[2025-01-15T22:22:57.697Z] - username: "noviKorisnik" - status: "neuspješno"
+[2025-01-15T22:30:14.871Z] - username: "noviKorisnikProba" - status: "uspješno"
