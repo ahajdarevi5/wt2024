@@ -1,3 +1,30 @@
+const sequelize=require('./database');
+const Korisnik=require('./models/Korisnik');
+const Nekretnina=require('./models/Nekretnina');
+const Upit=require('./models/Upit');
+const Zahtjev=require('./models/Zahtjev');
+const Ponuda=require('./models/Ponuda');
+
+Korisnik.hasMany(Upit,{foreignKey:'korisnik_id'});
+Upit.belongsTo(Korisnik,{foreignKey:'korisnik_id'});
+
+Korisnik.hasMany(Zahtjev,{foreignKey:'korisnik_id'});
+Zahtjev.belongsTo(Korisnik,{foreignKey:'korisnik_id'});
+
+Korisnik.hasMany(Ponuda,{foreignKey:'korisnik_id'});
+Ponuda.belongsTo(Korisnik,{foreignKey:'korisnik_id'});
+
+Nekretnina.hasMany(Upit,{foreignKey:'nekretnina_id'});
+Upit.belongsTo(Nekretnina,{foreignKey:'nekretnina_id'});
+
+Nekretnina.hasMany(Zahtjev,{foreignKey:'nekretnina_id'});
+Zahtjev.belongsTo(Nekretnina,{foreignKey:'nekretnina_id'});
+
+Nekretnina.hasMany(Ponuda,{foreignKey:'nekretnina_id'});
+Ponuda.belongsTo(Nekretnina,{foreignKey:'nekretnina_id'});
+
+
+
 const express = require('express');
 const session = require("express-session");
 const path = require('path');
@@ -334,7 +361,7 @@ Returns all properties from the file.
 */
 app.get('/nekretnine', async (req, res) => {
   try {
-    const nekretnineData = await readJsonFile('nekretnine');
+    const nekretnineData=await Nekretnina.findAll();
     res.json(nekretnineData);
   } catch (error) {
     console.error('Error fetching properties data:', error);
