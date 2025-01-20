@@ -24,7 +24,252 @@ Nekretnina.hasMany(Ponuda,{foreignKey:'nekretnina_id'});
 Ponuda.belongsTo(Nekretnina,{foreignKey:'nekretnina_id'});
 
 
+//Kod kako sam dodala korisnike i nekretnine
+/*
+const listaKorisnika = [
+    {
+        id: 1,
+        ime: "Neko",
+        prezime: "Nekic",
+        username: "username1",
+        password: "$2b$10$OFykzLMWv.wpDk2dXT5C8ObIgy8tlZYbm0ZPN0VTe8I/jXosIX1EG"
+    },
+    {
+        id: 2,
+        ime: "Neko2",
+        prezime: "Nekic2",
+        username: "username2",
+        password: "$2b$10$eN2a0Ii0mkjvpSUU.6.S4uASuULIlAspWFc2LkJTmIYPZszB8oyXC"
+    },
+    {
+        id: 3,
+        ime: "Novi",
+        prezime: "Korisnik",
+        username: "noviKorisnik",
+        password: "$2b$10$nMwv9btxZJb3WnBIpLgPUeUvYeWKes7mnWlO6f4.5QHeGB5iHIfj2"
+    },
+    {
+        id: 4,
+        ime: "Novi",
+        prezime: "Korisnik",
+        username: "noviKorisnikProba",
+        password: "$2b$10$nMwv9btxZJb3WnBIpLgPUeUvYeWKes7mnWlO6f4.5QHeGB5iHIfj2"
+    }
+];
 
+const listaNekretnina = [
+    {
+        id: 1,
+        tip_nekretnine: "Stan",
+        naziv: "Useljiv stan Sarajevo",
+        kvadratura: 58,
+        cijena: 232000,
+        tip_grijanja: "plin",
+        lokacija: "Novo Sarajevo",
+        godina_izgradnje: 2019,
+        datum_objave: "2023-10-01",
+        opis: "Sociis natoque penatibus.",
+        upiti: [
+            { korisnik_id: 1, tekst_upita: "Nullam eu pede mollis pretium." },
+            { korisnik_id: 2, tekst_upita: "Phasellus viverra nulla." },
+            { korisnik_id: 3, tekst_upita: "aaa" },
+            { korisnik_id: 3, tekst_upita: "bbbbbbbbbbbbbbb?" },
+            { korisnik_id: 3, tekst_upita: "cccccccccccccccccccccccccccc" }
+        ]
+    },
+    {
+        id: 2,
+        tip_nekretnine: "Poslovni prostor",
+        naziv: "Mali poslovni prostor",
+        kvadratura: 20,
+        cijena: 70000,
+        tip_grijanja: "struja",
+        lokacija: "Centar",
+        godina_izgradnje: 2005,
+        datum_objave: "2023-08-20",
+        opis: "Magnis dis parturient montes.",
+        upiti: [
+            { korisnik_id: 2, tekst_upita: "Integer tincidunt." },
+            { korisnik_id: 3, tekst_upita: "Da li je nekretnina još dostupna?" }
+        ]
+    },
+    {
+        id: 3,
+        tip_nekretnine: "Kuća",
+        naziv: "Porodična kuća",
+        kvadratura: 140,
+        cijena: 430000,
+        tip_grijanja: "centralno",
+        lokacija: "Novi Grad",
+        godina_izgradnje: 2015,
+        datum_objave: "2023-12-13",
+        opis: "Magnis dis parturient montes.",
+        upiti: [
+            { korisnik_id: 1, tekst_upita: "Nullam eu pede mollis pretium." },
+            { korisnik_id: 2, tekst_upita: "Phasellus viverra nulla." }
+        ]
+    },
+    {
+        id: 4,
+        tip_nekretnine: "Stan",
+        naziv: "Useljiv stan Sarajevo",
+        kvadratura: 30,
+        cijena: 130000,
+        tip_grijanja: "struja",
+        lokacija: "Novo Sarajevo",
+        godina_izgradnje: 2013,
+        datum_objave: "2023-12-11",
+        opis: "Magnis dis parturient montes.",
+        upiti: [
+            { korisnik_id: 3, tekst_upita: "Upit pod brojem 1?" },
+            { korisnik_id: 2, tekst_upita: "Upit broj 2?" },
+            { korisnik_id: 1, tekst_upita: "Jos jedan upit broj 3?" },
+            { korisnik_id: 3, tekst_upita: "Dodatni upit korisnika 3?" }
+        ]
+    }
+];
+
+(async () => {
+    try {
+        await sequelize.authenticate();
+        console.log("Uspjesno povezano sa bazom.");
+        await sequelize.sync({ force: true });
+        console.log("Sve tabele su uspjesno kreirane");
+
+        for (const korisnik of listaKorisnika)
+        {
+            await Korisnik.create(korisnik);
+        }
+        console.log("Svi korisnici su uspjesno uneseni.");
+
+        for (const nekretnina of listaNekretnina)
+        {
+            const createdNekretnina = await Nekretnina.create({
+                tip_nekretnine: nekretnina.tip_nekretnine,
+                naziv: nekretnina.naziv,
+                kvadratura: nekretnina.kvadratura,
+                cijena: nekretnina.cijena,
+                tip_grijanja: nekretnina.tip_grijanja,
+                lokacija: nekretnina.lokacija,
+                godina_izgradnje: nekretnina.godina_izgradnje,
+                datum_objave: nekretnina.datum_objave,
+                opis: nekretnina.opis
+            });
+
+            for (const upit of nekretnina.upiti)
+            {
+                await Upit.create({
+                    tekst_upita: upit.tekst_upita,
+                    korisnik_id: upit.korisnik_id,
+                    nekretnina_id: createdNekretnina.id
+                });
+            }
+        }
+        console.log("Nekretnine i upiti su uspjesno uneseni u bazu.");
+    } 
+    catch (error)
+    {
+        console.error("Greska:", error);
+    }
+})();
+*/
+
+//Kod kako sam dodala ponude
+/*
+(async () => {
+  try {
+      const listePonuda=[
+          {
+              tekst_upita: "Nudim 210 000 KM za stan",
+              cijenaPonude: 210000,
+              datumPonude: "2025-01-19",
+              odbijenaPonuda: false,
+              korisnik_id: 1,
+              nekretnina_id: 1
+          },
+          {
+              tekst_upita: "Nudim 50 000 KM",
+              cijenaPonude: 50000,
+              datumPonude: "2025-01-19",
+              odbijenaPonuda: true,
+              korisnik_id: 2,
+              nekretnina_id: 2
+          },
+          {
+              tekst_upita: "Ponuda za 310 000 KM za kuću.",
+              cijenaPonude: 440000,
+              datumPonude: "2024-12-19",
+              odbijenaPonuda: true,
+              korisnik_id: 3,
+              nekretnina_id: 3
+          },
+          {
+              tekst_upita: "Moze li 225 000 KM?",
+              cijenaPonude: 225000,
+              datumPonude: "2024-11-10",
+              odbijenaPonuda: false,
+              korisnik_id: 4,
+              nekretnina_id: 1
+          }
+      ];
+
+      for (const ponuda of listePonuda)
+      {
+          await Ponuda.create(ponuda);
+      }
+      console.log("Sve ponude su uspjesno dodane u bazu.");
+  }
+  catch(error)
+  {
+      console.error("Greska:", error);
+  }
+})();
+*/
+
+//Kod kako sam dodala zahtjeve
+/*
+(async () => {
+  try {
+      const listaZahtjeva=[
+          {
+              tekst_upita: "Htjela bih pogledati stan",
+              trazeniDatum: "2025-01-31",
+              odobren: true,
+              korisnik_id: 1,
+              nekretnina_id: 1
+          },
+          {
+              tekst_upita: "Htjela bih pogledati poslovni prostor",
+              trazeniDatum: "2025-01-24",
+              odobren: false,
+              korisnik_id: 2,
+              nekretnina_id: 2
+          },
+          {
+              tekst_upita: "Htjela bih pogledati kucu",
+              trazeniDatum: "2025-01-28",
+              odobren: true,
+              korisnik_id: 3,
+              nekretnina_id: 3
+          },
+          {
+              tekst_upita: "Htjela bih pogledati stan",
+              trazeniDatum: "2025-01-29",
+              odobren: false,
+              korisnik_id: 4,
+              nekretnina_id: 4
+          }
+      ];
+
+      for (const zahtjev of listaZahtjeva) {
+          await Zahtjev.create(zahtjev);
+      }
+      console.log("Zahtjevi uspješno uneseni u bazu!");
+  } catch (error) {
+      console.error("Greška pri unosu zahtjeva:", error);
+  }
+})();
+*/
 const express = require('express');
 const session = require("express-session");
 const path = require('path');

@@ -47,4 +47,16 @@ const Nekretnina=sequelize.define('Nekretnina',{
         allowNull:true,
     },
 });
+
+Nekretnina.prototype.getInteresovanja=async function(){
+    const upiti=await Upit.findAll({where:{nekretnina_id:this.id}});
+    const zahtjevi=await Zahtjev.findAll({where:{nekretnina_id:this.id}});
+    const ponude=await Ponuda.findAll({where:{nekretnina_id:this.id}});
+    return
+    {
+        upiti,
+        zahtjevi,
+        ponude
+    };
+};
 module.exports = Nekretnina;

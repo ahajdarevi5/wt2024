@@ -32,4 +32,9 @@ const Ponuda=sequelize.define('Ponuda',{
         defaultValue:false,
     },
 });
+
+Ponuda.prototype.getVezanePonude=async function (){
+    return await Ponuda.findAll({where:{nekretnina_id:this.nekretnina_id},});
+};
+
 module.exports=Ponuda;
