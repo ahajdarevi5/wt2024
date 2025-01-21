@@ -4,6 +4,7 @@ const Nekretnina=require('./models/Nekretnina');
 const Upit=require('./models/Upit');
 const Zahtjev=require('./models/Zahtjev');
 const Ponuda=require('./models/Ponuda');
+const { Sequelize } = require('sequelize');
 
 Korisnik.hasMany(Upit,{foreignKey:'korisnik_id'});
 Upit.belongsTo(Korisnik,{foreignKey:'korisnik_id'});
@@ -22,8 +23,6 @@ Zahtjev.belongsTo(Nekretnina,{foreignKey:'nekretnina_id'});
 
 Nekretnina.hasMany(Ponuda,{foreignKey:'nekretnina_id'});
 Ponuda.belongsTo(Nekretnina,{foreignKey:'nekretnina_id'});
-
-
 
 const express = require('express');
 const session = require("express-session");
@@ -125,11 +124,9 @@ app.post('/login', async (req, res) => {
         greska: 'Previše neuspješnih pokušaja. Pokušajte ponovo za 1 minutu.'
       });
     }
-
-    const data=await fs.readFile(path.join(__dirname,'data','korisnici.json'), 'utf-8');
-    const korisnici = JSON.parse(data);
-
-    const korisnik = korisnici.find((k) => k.username === jsonObj.username);
+    const korisnik=await Korisnik.findOne({
+      where: { username: jsonObj.username },
+    });
     if (!korisnik) {
       await prijaveZapis(jsonObj.username, 'neuspješno');
       return neuspjesnaPrijava(jsonObj.username, res);
@@ -142,17 +139,17 @@ app.post('/login', async (req, res) => {
     }
 
     req.session.username = jsonObj.username;
-    req.session.user = { id: korisnik.id, username: jsonObj.username };
+    req.session.user = { id: korisnik.id, username: jsonObj.username, admin: korisnik.admin,};
 
     await prijaveZapis(jsonObj.username, 'uspješno');
 
-    if (pokusajaPrijava[jsonObj.username]) 
+    if (pokusajaPrijava[jsonObj.username])
     {
       delete pokusajaPrijava[jsonObj.username];
     }
 
     res.json({ poruka: 'Uspješna prijava' });
-  } 
+  }
   catch (error) 
   {
     console.error('Error during login:', error);
@@ -422,6 +419,7 @@ app.post('/marketing/osvjezi/klikovi', async (req, res) => {
 
 
 /*******************************************************/
+/*vraca iz baze*/
 app.get('/nekretnine/top5',async (req,res) => {
   const {lokacija}=req.query;
 
@@ -430,41 +428,54 @@ app.get('/nekretnine/top5',async (req,res) => {
     return res.status(400).json({ greska: 'Niste postavili parametar za lokaciju.' });
   }
 
-  try 
+  try
   {
-    const izDatoteke=await fs.readFile(path.join(__dirname,'data','nekretnine.json'),'utf-8');
-    const sveNekretnine=JSON.parse(izDatoteke);
+    const rez=await Nekretnina.findAll({
+      where:{
+        lokacija: { [Sequelize.Op.like]: `%${lokacija}%` },
+      },
+      order:[['datum_objave','DESC']],
+      limit:5 
+    });
 
-    const filtriraneNekr=sveNekretnine.filter((nekretnina)=>nekretnina.lokacija.toLowerCase() === lokacija.toLowerCase()
-    );
-
-    const sortNekr=filtriraneNekr.sort((a,b)=>
-        new Date(b.datum_objave.split('.').reverse().join('-')) -
-        new Date(a.datum_objave.split('.').reverse().join('-'))
-    );
-
-    const rez=sortNekr.slice(0,5);
-
-    res.status(200).json(rez);
+    if(rez.length===0)
+    {
+      return res.status(404).json({ poruka:'Za zadanu lokaciju nema nekretnina.'});
+    }
+    res.status(200).json(rez); 
   } 
-  catch (error) 
+  catch (error)
   {
-    console.error('Greška pri čitanju datoteke!',error);
-    res.status(500).json({ greska: 'Interna greška servera.' });
+    console.error('Greška pri citanju:',error);
+    res.status(500).json({ greska: 'Interna greska servera.' });
   }
 });
 
 
 /*vraca iz baze*/
 app.get('/upiti/moji', async (req, res) => {
-  if (!req.session.user) 
-  {
-    return res.status(401).json({ greska:'Neautorizovan pristup' });
+  if (!req.session.user) {
+    return res.status(401).json({ greska: 'Neautorizovan pristup' });
   }
-  try
+  try 
   {
-    const upiti=await Upit.findAll({where:{korisnik_id: req.session.user.id },include:[Nekretnina],});
-    res.status(200).json(upiti);
+    const korisnik=req.session.user.id;
+    const upiti=await Upit.findAll({where:{korisnik_id:korisnik},
+                                    include:[{
+                                              model: Nekretnina,
+                                              attributes: ['id'], 
+                                            },
+                                          ],
+                                    });
+    const rez=[];
+    for(let i=0;i<upiti.length;i++)
+    {
+      rez.push({
+        id_nekretnine:upiti[i].nekretnina_id, 
+        tekst_upita:upiti[i].tekst_upita,
+      });
+    }
+    res.status(200).json(rez);
   }
   catch (error)
   {
@@ -544,6 +555,7 @@ app.get('/next/upiti/nekretnina/:id',async (req, res)=>{
     res.status(500).json({ greska:'Interna greska servera.' });
   }
 });
+
 
 //za prikaz
 app.get('/mojiUpiti.html', async (req, res) => {
