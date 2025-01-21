@@ -223,51 +223,38 @@ app.get('/korisnik', async (req, res) => {
 });
 
 
-/*RADI*/
+/*vraca iz baze*/
 app.post('/upit', async (req, res) => {
-  // Check if the user is authenticated
-  if (!req.session.user) {
-    // User is not logged in
-    return res.status(401).json({ greska: 'Neautorizovan pristup' });
+  if (!req.session.user)
+  {
+    return res.status(401).json({ greska:'Neautorizovan pristup'});
   }
 
-  // Get data from the request body
   const { nekretnina_id, tekst_upita } = req.body;
 
-  try {
-    /*postojeci kod*/
-    const users=await readJsonFile('korisnici');
-    const nekretnine=await readJsonFile('nekretnine');
-    const loggedInUser=users.find((user) => user.username === req.session.user.username);
-    const nekretnina=nekretnine.find((property) => property.id === nekretnina_id);
-
-    if (!nekretnina) 
-    {
-      return res.status(400).json({ greska: `Nekretnina sa id-em ${nekretnina_id} ne postoji` });
-    }
-
-    const sviUpiti=nekretnina.upiti.filter(
-      (query) => query.korisnik_id === loggedInUser.id
-    );
-
-    if (sviUpiti.length>=3) {
-      return res.status(429).json({ greska: 'Previse upita za istu nekretninu.' });
-    }
-
-    nekretnina.upiti.push({
-      korisnik_id: loggedInUser.id,
-      tekst_upita: tekst_upita
-    });
-
-    // Save the updated properties data back to the JSON file
-    await saveJsonFile('nekretnine', nekretnine);
-
-    res.status(200).json({ poruka: 'Upit je uspješno dodan' });
-  } 
-  catch (error) 
+  try
   {
-    console.error('Error processing query:', error);
-    res.status(500).json({ greska: 'Internal Server Error' });
+    const nekretnina=await Nekretnina.findByPk(nekretnina_id);
+    if(!nekretnina)
+    {
+      return res.status(400).json({greska:'Nekretnina ne postoji'});
+    }
+
+    const brojUpita=await Upit.count({where:{nekretnina_id,korisnik_id: req.session.user.id,},});
+
+    if (brojUpita >= 3){
+      return res.status(429).json({ greska: 'Previše upita za istu nekretninu.' });
+    }
+    await Upit.create({nekretnina_id,
+                      korisnik_id: req.session.user.id,
+                      tekst_upita,});
+
+    res.status(200).json({ poruka: 'Upit je uspjesno dodan' });
+  }
+  catch(error)
+  {
+    console.error('Greska kod kreiranja upita:',error);
+    res.status(500).json({ greska: 'Interna greška servera' });
   }
 });
 
@@ -468,43 +455,21 @@ app.get('/nekretnine/top5',async (req,res) => {
 });
 
 
+/*vraca iz baze*/
 app.get('/upiti/moji', async (req, res) => {
   if (!req.session.user) 
-    {
-      return res.status(401).json({ greska:'Neautorizovan pristup' });
-    }
-
-  try {
-    const izDatoteke=await fs.readFile(path.join(__dirname,'data','nekretnine.json'),'utf-8');
-    const nekretnine=JSON.parse(izDatoteke);
-    const korisnikId=req.session.user.id;
-    const rez=[];
-
-    for (const nekretnina of nekretnine) 
-    {
-      for (const upit of nekretnina.upiti) 
-      {
-        if (upit.korisnik_id === korisnikId) 
-        {
-          rez.push({
-            id_nekretnine: nekretnina.id,
-            tekst_upita: upit.tekst_upita,
-          });
-        }
-      }
-    }
-
-    if (rez.length===0) 
-    {
-      return res.status(404).json([]); 
-    }
-
-    res.status(200).json(rez);
-  } 
+  {
+    return res.status(401).json({ greska:'Neautorizovan pristup' });
+  }
+  try
+  {
+    const upiti=await Upit.findAll({where:{korisnik_id: req.session.user.id },include:[Nekretnina],});
+    res.status(200).json(upiti);
+  }
   catch (error)
   {
-    console.error('Greška pri čitanju datoteke:', error);
-    res.status(500).json({ greska: 'Interna greška servera.' });
+    console.error('Greska kod dohvacanja upita', error);
+    res.status(500).json({ greska: 'Interna greška servera' });
   }
 });
 
