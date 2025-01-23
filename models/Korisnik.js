@@ -28,6 +28,10 @@ const Korisnik=sequelize.define('Korisnik',{
         type:DataTypes.BOOLEAN,
         defaultValue:false,
     },
-});
+    },
+    {
+    freezeTableName: true,
+    }
+);
 
 module.exports=Korisnik;

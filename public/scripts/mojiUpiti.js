@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const upiti=JSON.parse(data);
             if (upiti.length===0)
             {
-                cont.innerHTML='<p style="font-style: italic;">Nemate upita.</p>';
+                cont.innerHTML='<p>Nemate upita.</p>';
             } 
             else
             {
