@@ -132,12 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
           {
             ponudaDiv.innerHTML = `
               <p><strong>Ponuda ID:</strong> ${ponuda.id}</p>
-              <p><strong>Korisnik ID:</strong> ${ponuda.korisnik_id}</p>
-              <p><strong>ID nekretnine:</strong> ${ponuda.nekretnina_id}</p>
               <p><strong>Tekst:</strong> ${ponuda.tekst_upita}</p>
-              <p><strong>Cijena:</strong> ${ponuda.cijenaPonude} KM</p>
-              <p><strong>ID vezane ponude:</strong> ${ponuda.vezanePonude || "Nema"}</p>
-              <p><strong>ID korijenske ponude:</strong> ${ponuda.korijenskaPonuda_id || "Nema"}</p>
               <p><strong>Status:</strong> ${ponuda.status}</p>
             `;
           } 
@@ -244,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if(!tekstZahtjeva || !trazeniDatum) 
       {
         alert("Tekst i datum su obavezni.");
+        
         return;
       }
       PoziviAjax.postZahtjev(nekretninaId,{tekst:tekstZahtjeva,trazeniDatum},(err)=>{
@@ -349,7 +345,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    const data={odobren,addToTekst: odobren ? null : addToTekst.trim(),};
+    const data={odobren, addToTekst: addToTekst ? addToTekst.trim() : "",};
     PoziviAjax.putZahtjev(nekretninaId,zahtjevId,data,(err, response)=>{
         if (err)
         {

@@ -1119,17 +1119,17 @@ app.put('/nekretnina/:id/zahtjev/:zid', async (req, res) => {
     {
       return res.status(404).json({greska:'Zahtjev nije pronadjen.' });
     }
-    if(odobren===false) 
-    {
-      if (!addToTekst || addToTekst.trim() === '') 
-      {
-        return res.status(404).json({greska: 'Parametar addToTekst je obavezan kada je odobren postavljen na false.',});
-      }
+    if (odobren === false && (!addToTekst || addToTekst.trim() === '')) {
+      return res.status(400).json({
+        greska: 'Parametar addToTekst je obavezan kada je odobren postavljen na false.',
+      });
     }
-    zahtjev.odobren=odobren;
-    if(addToTekst)
+
+    zahtjev.odobren = odobren;
+
+    if (addToTekst)
     {
-      zahtjev.tekst_upita+=` ODGOVOR ADMINA: ${addToTekst.trim()}`;
+      zahtjev.tekst_upita += ` ODGOVOR ADMINA: ${addToTekst.trim()}`;
     }
     await zahtjev.save();
     res.status(200).json({ poruka: 'Zahtjev je azuriran.', zahtjev });

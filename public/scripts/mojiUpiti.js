@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     nekrId.classList.add('naslov-nekretnine'); 
                 
                     const tekst=document.createElement('p');
-                    tekst.textContent=`Vaš upit: ${upit.tekst_upita}`;
+                    tekst.textContent=`Vaš upit: ${upit.tekst}`;
                     tekst.classList.add('tekst-upita'); 
                 
                     divNekretnina.appendChild(nekrId);
