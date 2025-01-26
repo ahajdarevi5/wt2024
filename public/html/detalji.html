@@ -36,12 +36,82 @@
             <p><strong>Opis:</strong> <span id="opis-nekretnine"></span></p>
         </div>
     </div>
-
+  
     <h3>UPITI</h3>
-    <div id="upiti"></div>
+    <div id="upiti-sekcija"></div>
     <div class="dugmad">
-        <button class="btn-preth">&lt;</button>
-        <button class="btn-sljedeci">&gt;</button>
+    <button class="btn-preth-upiti">&lt;</button>
+    <button class="btn-sljedeci-upiti">&gt;</button>
     </div>
+
+    <h3>ZAHTJEVI</h3>
+    <div id="zahtjevi-sekcija"></div>
+    <div class="dugmad">
+    <button class="btn-preth-zahtjevi">&lt;</button>
+    <button class="btn-sljedeci-zahtjevi">&gt;</button>
+    </div>
+
+    <h3>PONUDE</h3>
+    <div id="ponude-sekcija"></div>
+    <div class="dugmad">
+    <button class="btn-preth-ponude">&lt;</button>
+    <button class="btn-sljedeci-ponude">&gt;</button>
+    </div>
+
+
+    <h3>Dodaj novo interesovanje</h3>
+<form id="forma-interesovanja">
+    <label for="tip-interesovanja">Tip interesovanja:</label>
+    <select id="tip-interesovanja" name="tip-interesovanja">
+        <option value="upit">Upit</option>
+        <option value="zahtjev">Zahtjev</option>
+        <option value="ponuda">Ponuda</option>
+    </select>
+    
+    <div id="polja-upit" class="tip-interesovanja">
+        <label for="tekst-upita">Tekst upita:</label>
+        <textarea id="tekst-upita" name="tekst-upita"></textarea>
+    </div>
+    
+    <div id="polja-zahtjev" class="tip-interesovanja" style="display: none;">
+        <label for="tekst-zahtjeva">Tekst zahtjeva:</label>
+        <textarea id="tekst-zahtjeva" name="tekst-zahtjeva"></textarea>
+        <label for="datum-zahtjeva">Traženi datum:</label>
+        <input type="date" id="datum-zahtjeva" name="datum-zahtjeva">
+    </div>
+    <div id="polja-zahtjev-admin" class="tip-interesovanja-admin" style="display: none;">
+        <label for="admin-status-zahtjeva">Status zahtjeva:</label>
+        <select id="admin-status-zahtjeva" name="admin-status-zahtjeva">
+            <option value="odobri">Odobri</option>
+            <option value="odbij">Odbij</option>
+        </select>
+        <label for="admin-add-tekst">Dodaj tekst:</label>
+        <textarea id="admin-add-tekst" name="admin-add-tekst"></textarea>
+        <button id="admin-azuriraj-zahtjev">Ažuriraj zahtjev</button>
+    </div>
+    
+    
+    <div id="polja-ponuda" class="tip-interesovanja" style="display: none;">
+        <label for="tekst-ponude">Tekst ponude:</label>
+        <textarea id="tekst-ponude" name="tekst-ponude"></textarea>
+        
+        <label for="cijena-ponude">Cijena ponude:</label>
+        <input type="number" id="cijena-ponude" name="cijena-ponude" step="0.01">
+        
+        <label for="vezana-ponuda-id">Vezana ponuda:</label>
+        <select id="vezana-ponuda-id" name="vezana-ponuda-id" disabled>
+            <option value="">Nema dostupnih ponuda</option>
+        </select>
+        
+        <label for="status-ponude">Status ponude:</label>
+        <select id="status-ponude" name="status-ponude">
+            <option value="odobri">Odobri</option>
+            <option value="odbij">Odbij</option>
+        </select>
+    </div>
+    
+    <button type="button" id="dodaj-interesovanje">Dodaj interesovanje</button>
+</form>
+
 </body>
 </html>

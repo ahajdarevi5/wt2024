@@ -47,85 +47,50 @@ const PoziviAjax = (() => {
     }
 
     // ažurira podatke loginovanog korisnika
-    function impl_putKorisnik(noviPodaci, fnCallback) {
-        // Check if user is authenticated
-        if (!req.session.username) {
-            // User is not logged in
+    function impl_putKorisnik(noviPodaci, fnCallback)
+    {
+        if(!req.session || !req.session.user)
+        {
             return fnCallback({ status: 401, statusText: 'Neautorizovan pristup' }, null);
         }
-
-        // Get data from request body
+        const korisnikId=req.session.user.id;
         const { ime, prezime, username, password } = noviPodaci;
+        Korisnik.findByPk(korisnikId)
+            .then(korisnik=>{
+                if(!korisnik)
+                {
+                    return fnCallback({status:404,statusText:'Korisnik nije pronadjen.'},null);
+                }
+                if (ime) korisnik.ime = ime;
+                if (prezime) korisnik.prezime = prezime;
+                if (username) korisnik.username = username;
+                if (password) korisnik.password = password; 
 
-        // Read user data from the JSON file
-        const users = readJsonFile('korisnici');
-
-        // Find the user by username
-        const loggedInUser = users.find((user) => user.username === req.session.username);
-
-        if (!loggedInUser) {
-            // User not found (should not happen if users are correctly managed)
-            return fnCallback({ status: 401, statusText: 'Neautorizovan pristup' }, null);
-        }
-
-        // Update user data with the provided values
-        if (ime) loggedInUser.ime = ime;
-        if (prezime) loggedInUser.prezime = prezime;
-        if (username) loggedInUser.adresa = adresa;
-        if (password) loggedInUser.brojTelefona = brojTelefona;
-
-        // Save the updated user data back to the JSON file
-        saveJsonFile('korisnici', users);
-
-        fnCallback(null, { poruka: 'Podaci su uspješno ažurirani' });
+                return korisnik.save();
+            })
+            .then(azKorisnik => {
+                fnCallback(null,{poruka:'Podaci su azurirani',korisnik:azKorisnik});
+            })
+            .catch(err => {
+                console.error('Greska kod azuriranja korisnika:', err);
+                fnCallback({status:500,statusText: 'Interna greska servera'},null);
+            });
     }
 
-    // dodaje novi upit za trenutno loginovanog korisnika
     function impl_postUpit(nekretnina_id, tekst_upita, fnCallback) {
-        // Check if user is authenticated
-        if (!req.session.username) {
-            // User is not logged in
-            return fnCallback({ status: 401, statusText: 'Neautorizovan pristup' }, null);
-        }
-
-        // Read user data from the JSON file asynchronously
-        readJsonFileAsync('korisnici', (err, users) => {
-            if (err) {
-                return fnCallback({ status: 500, statusText: 'Internal Server Error' }, null);
+        const requestBody = {
+            nekretnina_id,
+            tekst_upita: tekst_upita,
+        };
+        ajaxRequest("POST", "/upit", requestBody,(err, response)=>{
+            if (err)
+            {
+                fnCallback(err, null);
+            } 
+            else
+            {
+                fnCallback(null, JSON.parse(response));
             }
-
-            // Read properties data from the JSON file asynchronously
-            readJsonFileAsync('nekretnine', (err, nekretnine) => {
-                if (err) {
-                    return fnCallback({ status: 500, statusText: 'Internal Server Error' }, null);
-                }
-
-                // Find the user by username
-                const loggedInUser = users.find((user) => user.username === req.session.username);
-
-                // Check if the property with nekretnina_id exists
-                const nekretnina = nekretnine.find((property) => property.id === nekretnina_id);
-
-                if (!nekretnina) {
-                    // Property not found
-                    return fnCallback({ status: 400, statusText: `Nekretnina sa id-em ${nekretnina_id} ne postoji` }, null);
-                }
-
-                // Add a new query to the property's queries array
-                nekretnina.upiti.push({
-                    korisnik_id: loggedInUser.id,
-                    tekst_upita: tekst_upita
-                });
-
-                // Save the updated properties data back to the JSON file asynchronously
-                saveJsonFileAsync('nekretnine', nekretnine, (err) => {
-                    if (err) {
-                        return fnCallback({ status: 500, statusText: 'Internal Server Error' }, null);
-                    }
-
-                    fnCallback(null, { poruka: 'Upit je uspješno dodan' });
-                });
-            });
         });
     }
 
@@ -201,8 +166,32 @@ const PoziviAjax = (() => {
     {
         ajaxRequest('GET',`/next/upiti/nekretnina/${nekretnina_id}?page=${page}`,null,fnCallback);
     }
+    function getPonude(nekretninaId, fnCallback)
+    {
+        ajaxRequest('GET',`/nekretnina/${nekretninaId}/interesovanja`,null,fnCallback);
+    }
+    function postZahtjev(nekretninaId, data, fnCallback)
+    {
+        ajaxRequest("POST",`/nekretnina/${nekretninaId}/zahtjev`,data,fnCallback);
+    }
     
+    function postPonuda(nekretninaId, data, fnCallback)
+    {
+        ajaxRequest("POST",`/nekretnina/${nekretninaId}/ponuda`,data,fnCallback);
+    }
 
+    function getVezanePonude(nekretninaId, fnCallback) 
+    {
+        ajaxRequest("GET",`/nekretnina/${nekretninaId}/vezane-ponude`,null,fnCallback);
+    }
+    function putZahtjev(nekretninaId,zahtjevId,data,fnCallback)
+    {
+        const url = `/nekretnina/${nekretninaId}/zahtjev/${zahtjevId}`;
+        ajaxRequest("PUT",url,data,fnCallback);
+    }
+       
+      
+      
     return {
         postLogin: impl_postLogin,
         postLogout: impl_postLogout,
@@ -213,6 +202,11 @@ const PoziviAjax = (() => {
         getTop5Nekretnina,
         getMojiUpiti,
         getNekretnina,
-        getNextUpiti
+        getNextUpiti,
+        getPonude,
+        postZahtjev,
+        postPonuda,
+        getVezanePonude,
+        putZahtjev
     };
 })();

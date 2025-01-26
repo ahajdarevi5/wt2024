@@ -1,98 +1,179 @@
 body {
-    background-color: #fdf1d3;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  body h3 {
-    margin-left: 20px;
-  }
-  
-  iframe {
-    border: none; 
-    width: 100%;
-    height: 65px;
-  }
-  
-  /* Stil za div #osnovno */
-  #osnovno {
-    text-align: left;
-    border: 1px solid #000;
-    padding: 20px;
-    margin: 20px;
-  }
-  
-  #osnovno img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  /* Stil za div #detalji */
-  #detalji {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: flex-start;
-    align-items: flex-start;
-    border: 1px solid #000;
-    padding: 20px;
-    margin: 20px;
-  }
-  
-  #kolona1 {
-    order: 1;
-    flex: 1 1 auto;
-    align-self: auto;
-  }
-  
-  #kolona2 {
-    order: 2;
-    flex: 1 1 auto;
-    align-self: auto;
-  }
-  
-  #opis {
-    order: 3;
-    flex: 0 1 100%;
-    align-self: auto;
-  }
-  
-  
-  /* Stil za div #upiti */
-  #upiti {
-    border: 1px solid #000;
-    padding: 20px;
-    margin: 20px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  }
-  
-  .upit {
-    display:block !important;
-    border: 1px solid #000;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: white;
-    width:100%;
-  }
+  background-color: #fdf1d3;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
-  .btn-preth, .btn-sljedeci{
-    display:inline-block;
-    background-color: transparent;
-    border-color: transparent;
-    font-size:20px;
-    cursor:pointer;
-  }
-  .dugmad{
-    display:flex;
-    justify-content: center;
-    flex-basis:100%;
-  }
+body h3 {
+  margin-left: 20px;
+}
+
+iframe {
+  border: none; 
+  width: 100%;
+  height: 65px;
+}
+
+/* Stil za div #osnovno */
+#osnovno {
+  text-align: left;
+  border: 1px solid #000;
+  padding: 20px;
+  margin: 20px;
+}
+
+#osnovno img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Stil za div #detalji */
+#detalji {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+  border: 1px solid #000;
+  padding: 20px;
+  margin: 20px;
+}
+
+#kolona1 {
+  order: 1;
+  flex: 1 1 auto;
+  align-self: auto;
+}
+
+#kolona2 {
+  order: 2;
+  flex: 1 1 auto;
+  align-self: auto;
+}
+
+#opis {
+  order: 3;
+  flex: 0 1 100%;
+  align-self: auto;
+}
+
+/* Stil za div #upiti */
+#upiti {
+  border: 1px solid #000;
+  padding: 20px;
+  margin: 20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.upit {
+  display:block !important;
+  border: 1px solid #000;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: white;
+  width:100%;
+}
+
+.btn-preth, .btn-sljedeci{
+  display:inline-block;
+  background-color: transparent;
+  border-color: transparent;
+  font-size:20px;
+  cursor:pointer;
+}
+.dugmad{
+  display:flex;
+  justify-content: center;
+  flex-basis:100%;
+}
 
 #lokacija{
-    color: blue;
-    text-decoration: underline;
+  color: blue;
+  text-decoration: underline;
 }
+.interesovanje {
+
+margin: 10px 0;
+padding: 10px;
+background-color: #fff4db; 
+}
+
+#upiti-sekcija,
+#zahtjevi-sekcija,
+#ponude-sekcija {
+border: 1px solid black;
+margin-bottom: 20px;
+margin-left:20px;
+margin-right:20px;
+padding: 15px;
+background-color: #fff4db;
+}
+
+#forma-interesovanja {
+background-color: #fff4db;
+border: 1px solid black;
+padding: 20px;
+margin: 20px;
+}
+
+#forma-interesovanja label {
+font-weight: bold;
+display: block;
+margin-top: 10px;
+}
+
+#forma-interesovanja textarea,
+#forma-interesovanja input,
+#forma-interesovanja select {
+
+padding: 10px;
+margin-top: 5px;
+margin-bottom: 15px;
+border: 1px solid #ccc;
+font-size: 14px;
+}
+
+#forma-interesovanja button {
+background-color: #ffe4b5;
+color: black;
+border: 2px solid black;
+padding: 10px 20px;
+font-weight: bold;
+cursor: pointer;
+}
+
+.admin-kont {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: #ffeecf;
+  border: 1px solid #ccc;
+}
+
+.admin-l{
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+  color: #333;
+}
+
+.admin-select,
+.admin-tekst1 {
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.admin-button {
+  background-color: #ffe4b5;
+  color: black;
+  border: 1px solid #000;
+  padding: 10px 15px;
+  font-weight: bold;
+}
+

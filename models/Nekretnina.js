@@ -54,12 +54,6 @@ const Nekretnina=sequelize.define('Nekretnina',{
     const upiti=await Upit.findAll({where:{nekretnina_id:this.id}});
     const zahtjevi=await Zahtjev.findAll({where:{nekretnina_id:this.id}});
     const ponude=await Ponuda.findAll({where:{nekretnina_id:this.id}});
-    return
-    {
-        upiti,
-        zahtjevi,
-        ponude
-    };
-};
+    return { upiti, zahtjevi, ponude };
+  };
 module.exports = Nekretnina;
-  
