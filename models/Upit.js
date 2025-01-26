@@ -6,7 +6,7 @@ const Upit=sequelize.define('Upit',{
       primaryKey:true,
       autoIncrement:true,
     },
-    tekst_upita:{
+    tekst:{
       type:DataTypes.TEXT,
       allowNull:false,
     },

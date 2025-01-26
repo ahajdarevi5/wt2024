@@ -70,13 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
             upitDiv.innerHTML=`
               <p><strong>Upit ID:</strong> ${upit.id}</p>
               <p><strong>Korisnik ID:</strong> ${upit.korisnik_id}</p>
-              <p><strong>Tekst:</strong> ${upit.tekst_upita}</p>
+              <p><strong>Tekst:</strong> ${upit.tekst}</p>
             `;
           } 
           else 
           {
             upitDiv.innerHTML=`<p><strong>Upit ID:</strong> ${upit.id}</p>
-                              <p><strong>Tekst:</strong> ${upit.tekst_upita}</p>`;
+                              <p><strong>Tekst:</strong> ${upit.tekst}</p>`;
           }
           upitiSekcija.appendChild(upitDiv);
         });
@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <p><strong>ID nekretnine:</strong> ${ponuda.nekretnina_id}</p>
               <p><strong>Tekst:</strong> ${ponuda.tekst_upita}</p>
               <p><strong>Cijena:</strong> ${ponuda.cijenaPonude} KM</p>
-              <p><strong>ID vezane ponude:</strong> ${ponuda.vezanaPonuda_id || "Nema"}</p>
+              <p><strong>ID vezane ponude:</strong> ${ponuda.vezanePonude || "Nema"}</p>
               <p><strong>ID korijenske ponude:</strong> ${ponuda.korijenskaPonuda_id || "Nema"}</p>
               <p><strong>Status:</strong> ${ponuda.status}</p>
             `;

@@ -43,11 +43,11 @@ const listaNekretnina = [
       datum_objave: "2023-10-01",
       opis: "Sociis natoque penatibus.",
       upiti: [
-          { korisnik_id: 1, tekst_upita: "Nullam eu pede mollis pretium." },
-          { korisnik_id: 2, tekst_upita: "Phasellus viverra nulla." },
-          { korisnik_id: 3, tekst_upita: "aaa" },
-          { korisnik_id: 3, tekst_upita: "bbbbbbbbbbbbbbb?" },
-          { korisnik_id: 3, tekst_upita: "cccccccccccccccccccccccccccc" }
+          { korisnik_id: 1, tekst: "Nullam eu pede mollis pretium." },
+          { korisnik_id: 2, tekst: "Phasellus viverra nulla." },
+          { korisnik_id: 3, tekst: "aaa" },
+          { korisnik_id: 3, tekst: "bbbbbbbbbbbbbbb?" },
+          { korisnik_id: 3, tekst: "cccccccccccccccccccccccccccc" }
       ]
   },
   {
@@ -62,8 +62,8 @@ const listaNekretnina = [
       datum_objave: "2023-08-20",
       opis: "Magnis dis parturient montes.",
       upiti: [
-          { korisnik_id: 2, tekst_upita: "Integer tincidunt." },
-          { korisnik_id: 3, tekst_upita: "Da li je nekretnina još dostupna?" }
+          { korisnik_id: 2, tekst: "Integer tincidunt." },
+          { korisnik_id: 3, tekst: "Da li je nekretnina još dostupna?" }
       ]
   },
   {
@@ -78,8 +78,8 @@ const listaNekretnina = [
       datum_objave: "2023-12-13",
       opis: "Magnis dis parturient montes.",
       upiti: [
-          { korisnik_id: 1, tekst_upita: "Nullam eu pede mollis pretium." },
-          { korisnik_id: 2, tekst_upita: "Phasellus viverra nulla." }
+          { korisnik_id: 1, tekst: "Nullam eu pede mollis pretium." },
+          { korisnik_id: 2, tekst: "Phasellus viverra nulla." }
       ]
   },
   {
@@ -94,10 +94,10 @@ const listaNekretnina = [
       datum_objave: "2023-12-11",
       opis: "Magnis dis parturient montes.",
       upiti: [
-          { korisnik_id: 3, tekst_upita: "Upit pod brojem 1?" },
-          { korisnik_id: 2, tekst_upita: "Upit broj 2?" },
-          { korisnik_id: 1, tekst_upita: "Jos jedan upit broj 3?" },
-          { korisnik_id: 3, tekst_upita: "Dodatni upit korisnika 3?" }
+          { korisnik_id: 3, tekst: "Upit pod brojem 1?" },
+          { korisnik_id: 2, tekst: "Upit broj 2?" },
+          { korisnik_id: 1, tekst: "Jos jedan upit broj 3?" },
+          { korisnik_id: 3, tekst: "Dodatni upit korisnika 3?" }
       ]
   }
 ];
@@ -153,17 +153,15 @@ async function kreirajBazu() {
   }
 }
 
-async function popuniBazu(){
-  try 
-  {
-    for(const korisnik of listaKorisnika)
-    {
+async function popuniBazu() {
+  try {
+    for (const korisnik of listaKorisnika) {
       await Korisnik.create(korisnik);
     }
     console.log('Korisnici iz liste dodani.');
 
-    const adminPassword=await bcrypt.hash('admin', 10);
-    const userPassword=await bcrypt.hash('user', 10);
+    const adminPassword = await bcrypt.hash('admin', 10);
+    const userPassword = await bcrypt.hash('user', 10);
 
     await Korisnik.create({
       ime: 'Admin',
@@ -183,9 +181,8 @@ async function popuniBazu(){
 
     console.log('Admin i user dodani.');
 
-    for (const nekretnina of listaNekretnina) 
-    {
-      const createdNekretnina=await Nekretnina.create({
+    for (const nekretnina of listaNekretnina) {
+      const createdNekretnina = await Nekretnina.create({
         tip_nekretnine: nekretnina.tip_nekretnine,
         naziv: nekretnina.naziv,
         kvadratura: nekretnina.kvadratura,
@@ -197,10 +194,9 @@ async function popuniBazu(){
         opis: nekretnina.opis,
       });
 
-      for(const upit of nekretnina.upiti) 
-      {
+      for (const upit of nekretnina.upiti) {
         await Upit.create({
-          tekst_upita: upit.tekst_upita,
+          tekst: upit.tekst,
           korisnik_id: upit.korisnik_id,
           nekretnina_id: createdNekretnina.id,
         });
@@ -208,7 +204,7 @@ async function popuniBazu(){
     }
     console.log('Nekretnine i upiti dodane u bazu.');
 
-    const ponudeData=[
+    const ponudeData = [
   {
     tekst_upita: "Ponuda za 210 000 KM",
     cijenaPonude: 210000,
@@ -216,7 +212,7 @@ async function popuniBazu(){
     odbijenaPonuda: false,
     korisnik_id: 1,
     nekretnina_id: 1,
-    vezanaPonuda_id: null, 
+    vezanePonude: null, 
     korijenskaPonuda_id: null, 
   },
   {
@@ -226,7 +222,7 @@ async function popuniBazu(){
     odbijenaPonuda: false,
     korisnik_id: 2,
     nekretnina_id: 1,
-    vezanaPonuda_id: null,
+    vezanePonude: null,
     korijenskaPonuda_id: null, 
   },
   {
@@ -236,7 +232,7 @@ async function popuniBazu(){
     odbijenaPonuda: true, 
     korisnik_id: 3,
     nekretnina_id: 1,
-    vezanaPonuda_id: null,
+    vezanePonude: null,
     korijenskaPonuda_id: null,
   },
 ];
@@ -252,8 +248,8 @@ for(let i=0;i<ponudeData.length;i++)
   } 
   else
   {
-    const vezanaPonuda=ponudeData[i-1];
-    const novaPonuda=await Ponuda.create({...ponuda,vezanaPonuda_id: vezanaPonuda.id,korijenskaPonuda_id: vezanaPonuda.korijenskaPonuda_id,});
+    const vezanaPonuda=ponudeData[i - 1];
+    const novaPonuda=await Ponuda.create({...ponuda,vezanePonude: vezanaPonuda.id,korijenskaPonuda_id: vezanaPonuda.korijenskaPonuda_id,});
     ponudeData[i] = novaPonuda; 
   }
 }
@@ -292,14 +288,11 @@ for(let i=0;i<ponudeData.length;i++)
       },
     ];
 
-    for(const zahtjev of listaZahtjeva)
-    {
+    for (const zahtjev of listaZahtjeva){
       await Zahtjev.create(zahtjev);
     }
     console.log('Zahtjevi dodani u bazu.');
-  } 
-  catch(error)
-  {
+  } catch (error) {
     console.error('Greska kod popunjavanja baze:', error);
   }
 }
@@ -319,9 +312,9 @@ for(let i=0;i<ponudeData.length;i++)
 })();
 
 
-const session=require("express-session");
-const path=require('path');
-const fs=require('fs').promises;
+const session = require("express-session");
+const path = require('path');
+const fs = require('fs').promises;
 
 app.use(
   session({
@@ -334,6 +327,7 @@ app.use(
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.json());
+
 
 const blockVrijeme=60*1000;
 const pokusajaPrijava={};
@@ -363,7 +357,7 @@ async function serveHTMLFile(req, res, fileName) {
   }
 }
 
-const routes=[
+const routes = [
   { route: '/nekretnine.html', file: 'nekretnine.html' },
   { route: '/detalji.html', file: 'detalji.html' },
   { route: '/meni.html', file: 'meni.html' },
@@ -407,37 +401,36 @@ app.post('/login', async (req, res) => {
     return res.status(400).json({ greska: 'Nedostaju podaci za prijavu' });
   }
 
-  try 
-  {
-    if (pokusajaPrijava[jsonObj.username]?.blokiran && pokusajaPrijava[jsonObj.username].blokiran>Date.now()) 
-    {
-      await prijaveZapis(jsonObj.username,'neuspješno');
+  try {
+    if (pokusajaPrijava[jsonObj.username]?.blokiran && pokusajaPrijava[jsonObj.username].blokiran > Date.now()) {
+      await prijaveZapis(jsonObj.username, 'neuspješno');
       return res.status(429).json({greska: 'Previše neuspješnih pokušaja. Pokušajte ponovo za 1 minutu.'});
     }
     const korisnik=await Korisnik.findOne({
       where: { username: jsonObj.username },
     });
-    if(!korisnik) 
-    {
-      await prijaveZapis(jsonObj.username,'neuspješno');
-      return neuspjesnaPrijava(jsonObj.username, res);
-    }
-
-    const isPasswordMatched=await bcrypt.compare(jsonObj.password, korisnik.password);
-    if(!isPasswordMatched) 
-    {
+    if (!korisnik) {
       await prijaveZapis(jsonObj.username, 'neuspješno');
       return neuspjesnaPrijava(jsonObj.username, res);
     }
 
-    req.session.username=jsonObj.username;
-    req.session.user={id:korisnik.id,username:jsonObj.username,admin:korisnik.admin,};
+    const isPasswordMatched = await bcrypt.compare(jsonObj.password, korisnik.password);
+    if (!isPasswordMatched) {
+      await prijaveZapis(jsonObj.username, 'neuspješno');
+      return neuspjesnaPrijava(jsonObj.username, res);
+    }
+
+    req.session.username = jsonObj.username;
+    req.session.user = { id: korisnik.id, username: jsonObj.username, admin: korisnik.admin,};
+
     await prijaveZapis(jsonObj.username, 'uspješno');
-    if(pokusajaPrijava[jsonObj.username])
+
+    if (pokusajaPrijava[jsonObj.username])
     {
       delete pokusajaPrijava[jsonObj.username];
     }
-    res.json({ poruka: 'Uspjesna prijava' });
+
+    res.json({ poruka: 'Uspješna prijava' });
   }
   catch (error) 
   {
@@ -447,18 +440,19 @@ app.post('/login', async (req, res) => {
 });
 
 function neuspjesnaPrijava(username, res) {
-  if (!pokusajaPrijava[username]) 
-  {
-    pokusajaPrijava[username]={pokusaja:0,blokiran:null};
+  if (!pokusajaPrijava[username]) {
+    pokusajaPrijava[username] = { pokusaja: 0, blokiran: null };
   }
 
   pokusajaPrijava[username].pokusaja++;
 
-  if(pokusajaPrijava[username].pokusaja>=3) 
-  {
-    pokusajaPrijava[username].blokiran=Date.now()+blockVrijeme;
-    return res.status(429).json({greska: 'Previše neuspješnih pokušaja. Pokušajte ponovo za 1 minutu.'});
+  if (pokusajaPrijava[username].pokusaja >= 3) {
+    pokusajaPrijava[username].blokiran = Date.now() + blockVrijeme;
+    return res.status(429).json({
+      greska: 'Previše neuspješnih pokušaja. Pokušajte ponovo za 1 minutu.'
+    });
   }
+
   return res.status(401).json({ poruka: 'Pogrešno korisničko ime ili lozinka' });
 }
 
@@ -515,8 +509,8 @@ app.post('/upit', async (req, res) => {
     return res.status(401).json({ greska:'Neautorizovan pristup'});
   }
 
-  const { nekretnina_id, tekst_upita } = req.body;
-  if (!tekst_upita || !nekretnina_id)
+  const { nekretnina_id, tekst } = req.body;
+  if (!tekst || !nekretnina_id)
   {
     return res.status(400).json({ greska: 'Tekst upita i ID nekretnine su obavezni.' });
   }
@@ -543,7 +537,7 @@ app.post('/upit', async (req, res) => {
     const noviUpit=await Upit.create({
       nekretnina_id,
       korisnik_id: req.session.user.id,
-      tekst_upita,
+      tekst,
     });
 
     res.status(200).json({ poruka: 'Upit je uspjesno dodan.', upit:noviUpit});
@@ -771,7 +765,7 @@ app.get('/upiti/moji', async (req, res) => {
     {
       rez.push({
         id_nekretnine:upiti[i].nekretnina_id, 
-        tekst_upita:upiti[i].tekst_upita,
+        tekst:upiti[i].tekst,
       });
     }
     res.status(200).json(rez);
@@ -842,7 +836,7 @@ app.get('/next/upiti/nekretnina/:id',async (req, res)=>{
       { 
         rez.push({
           korisnik_id: nekr.upiti[i].korisnik_id,
-          tekst_upita: nekr.upiti[i].tekst_upita,
+          tekst: nekr.upiti[i].tekst,
         });
       }
     }
@@ -886,7 +880,7 @@ app.get('/nekretnina/:id/interesovanja',async(req,res)=>{
     
     const ponude=await Ponuda.findAll({
       where:{nekretnina_id: nekretninaId },
-      attributes:['id', 'tekst_upita', 'cijenaPonude', 'odbijenaPonuda', 'vezanaPonuda_id', 'korijenskaPonuda_id', 'korisnik_id'], // Dodaj 'korisnik_id'
+      attributes:['id', 'tekst_upita', 'cijenaPonude', 'odbijenaPonuda', 'vezanePonude', 'korijenskaPonuda_id', 'korisnik_id'], // Dodaj 'korisnik_id'
       include:[{model: Korisnik,attributes: ['id','ime'] }],
     });
     
@@ -895,7 +889,7 @@ app.get('/nekretnina/:id/interesovanja',async(req,res)=>{
       upiti:upiti.map((upit)=>{
         const osnovniPodaci={
           id:upit.id,
-          tekst_upita:upit.tekst_upita,
+          tekst:upit.tekst,
         };
 
         if(korisnik?.admin || korisnik?.id===upit.korisnik_id)
@@ -939,7 +933,7 @@ app.get('/nekretnina/:id/interesovanja',async(req,res)=>{
             korisnik_id: ponuda.korisnik_id,
             nekretnina_id: nekretninaId,
             cijenaPonude: ponuda.cijenaPonude,
-            vezanaPonuda_id: ponuda.vezanaPonuda_id,
+            vezanePonude: ponuda.vezanePonude,
             korijenskaPonuda_id: ponuda.korijenskaPonuda_id,
             odbijenaPonuda: ponuda.odbijenaPonuda,
           };
@@ -1004,7 +998,7 @@ app.post('/nekretnina/:id/ponuda', async (req, res)=>{
       odbijenaPonuda: !!odbijenaPonuda,
       korisnik_id: korisnikId,
       nekretnina_id: nekretninaId,
-      vezanaPonuda_id: idVezanePonude,
+      vezanePonude: idVezanePonude,
       korijenskaPonuda_id: korijenskaPonudaId,
     });
     if(!idVezanePonude)

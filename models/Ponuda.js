@@ -43,7 +43,7 @@ const Ponuda=sequelize.define('Ponuda', {
     type:DataTypes.BOOLEAN,
     defaultValue:false,
   },
-  vezanaPonuda_id:{
+  vezanePonude:{
     type:DataTypes.INTEGER,
     allowNull:true,
     references:{
@@ -68,8 +68,8 @@ const Ponuda=sequelize.define('Ponuda', {
   freezeTableName: true,
 });
 
-Ponuda.belongsTo(Ponuda, { as: 'VezanaPonuda', foreignKey: 'vezanaPonuda_id' });
-Ponuda.hasMany(Ponuda, { as: 'Odgovori', foreignKey: 'vezanaPonuda_id' });
+Ponuda.belongsTo(Ponuda, { as: 'VezanaPonuda', foreignKey: 'vezanePonude' });
+Ponuda.hasMany(Ponuda, { as: 'Odgovori', foreignKey: 'vezanePonude' });
 
 Ponuda.belongsTo(Ponuda, { as: 'KorijenskaPonuda', foreignKey: 'korijenskaPonuda_id' });
 Ponuda.hasMany(Ponuda, { as: 'SveVezanePonude', foreignKey: 'korijenskaPonuda_id' });
