@@ -138,7 +138,7 @@ async function kreirajBazu() {
   try
   {
     const connection=await mysql.createConnection({
-      host:'localhost',
+      host:'mysql-db',
       user:'root', 
       password:'password',
     });
