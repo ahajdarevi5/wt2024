@@ -1,0 +1,58 @@
+{
+  "containerDefinitions": [
+    {
+      "name": "mysql-db",
+      "image": "mysql:latest",
+      "cpu": 256,
+      "memory": 512,
+      "portMappings": [
+        {
+          "containerPort": 3306,
+          "hostPort": 3306,
+          "protocol": "tcp"
+        }
+      ],
+      "environment": [
+        {
+          "name": "MYSQL_DATABASE",
+          "value": "wt24"
+        },
+        {
+          "name": "MYSQL_USER",
+          "value": "${MYSQL_USER}"
+        },
+        {
+          "name": "MYSQL_PASSWORD",
+          "value": "${MYSQL_PASSWORD}"
+        },
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "value": "${MYSQL_ROOT_PASSWORD}"
+        }
+      ],
+      "healthCheck": {
+        "retries": 10,
+        "command": [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost --password=${MYSQL_ROOT_PASSWORD}"
+        ],
+        "timeout": 10,
+        "interval": 30,
+        "startPeriod": 5
+      }
+    }
+  ],
+  "placementConstraints": [
+    {
+      "type": "memberOf",
+      "expression": "attribute:ecs.subnet-id in [${PRIVATE_SUBNET_ID}]"
+    }
+  ],
+  "family": "database-task",
+  "taskRoleArn": "${CI_AWS_TASK_EXECUTION_ROLE}",
+  "executionRoleArn": "${CI_AWS_TASK_EXECUTION_ROLE}",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512"
+}
